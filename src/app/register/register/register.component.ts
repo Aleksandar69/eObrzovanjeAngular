@@ -1,11 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SnotifyService } from 'ng-snotify';
 import { Subscription } from 'rxjs';
-import { NotificationType } from 'src/app/enum/notification-type.enum';
 import { User } from 'src/app/model/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
-import { NotificationService } from 'src/app/service/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +17,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(private router: Router, private authenticationService: AuthenticationService,
-    private notificationService: NotificationService) {}
+    private snotify: SnotifyService) {}
 
 
 
@@ -30,30 +29,65 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
 
   public onRegister(user: User): void {
-    console.log(user.ime);
-    console.log(user.prezime);
-    console.log(user.username);
     this.showLoading = true;
     this.subscriptions.push(
       this.authenticationService.register(user).subscribe(
         (response: User) => {
           this.showLoading = false;
-          this.sendNotification(NotificationType.SUCCESS, `A new account was created for ${response.ime}.
-          Please check your email for password to log in.`);
-        },
+          this.snotify.success(`A new account was created for ${response.ime}.
+          Please check your email for password to log in.`,
+            {
+              timeout: 2000,
+              showProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true
+            });
         (errorResponse: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+          this.notify(errorResponse.error.message, "error");
           this.showLoading = false;
         }
+      }
       )
     );
   }
 
-  private sendNotification(notificationType: NotificationType, message: string): void {
-    if (message) {
-      this.notificationService.notify(notificationType, message);
-    } else {
-      this.notificationService.notify(notificationType, 'An error occurred. Please try again.');
+
+  notify(message: string, type: string){
+    if(type==="error"){
+    this.snotify.error(message,
+      {
+        timeout: 2000,
+        showProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true
+      });
+    }
+    else if(type=="success"){
+      this.snotify.success(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+      }
+    else if(type=="info"){
+      this.snotify.info(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+      }
+    else if(type=="warning"){
+      this.snotify.warning(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
     }
   }
 

@@ -1,12 +1,11 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SnotifyService } from 'ng-snotify';
 import { Subscription } from 'rxjs';
 import { HeaderType } from 'src/app/enum/header-type.enum';
-import { NotificationType } from 'src/app/enum/notification-type.enum';
 import { User } from 'src/app/model/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
-import { NotificationService } from 'src/app/service/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +18,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   constructor(private router: Router, private authenticationService: AuthenticationService,
-    private notificationService: NotificationService) { }
+    private snotify: SnotifyService) { }
 
 
   ngOnInit(): void {
@@ -38,22 +37,53 @@ export class LoginComponent implements OnInit, OnDestroy {
           const token = response.headers.get(HeaderType.JWT_TOKEN);
           this.authenticationService.saveToken(token);
           this.authenticationService.addUserToLocalCache(response.body);
-          this.router.navigateByUrl('/user/management');
+          this.router.navigateByUrl('/profil');
           this.showLoading = false;
         },
         (errorResponse: HttpErrorResponse) => {
-          this.sendErrorNotification(NotificationType.ERROR, errorResponse.error.message);
+          this.notify(errorResponse.error.message, "error");
           this.showLoading = false;
         }
       )
     );
   }
 
-  private sendErrorNotification(notificationType: NotificationType, message: string): void {
-    if (message) {
-      this.notificationService.notify(notificationType, message);
-    } else {
-      this.notificationService.notify(notificationType, 'An error occurred. Please try again.');
+  notify(message: string, type: string){
+    if(type==="error"){
+    this.snotify.error(message,
+      {
+        timeout: 2000,
+        showProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true
+      });
+    }
+    else if(type=="success"){
+      this.snotify.success(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+      }
+    else if(type=="info"){
+      this.snotify.info(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+      }
+    else if(type=="warning"){
+      this.snotify.warning(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
     }
   }
 

@@ -5,6 +5,9 @@ export class User {
     public username: string;
     public role: string;
     public authorities: [];
+    public jmbg: string;
+    public adresa: string;
+    private password: string;
 
     constructor() {
       this.userId = '';
@@ -13,6 +16,9 @@ export class User {
       this.username = '';
       this.role = '';
       this.authorities = [];
+      this.jmbg = '';
+      this.adresa = '';
+      this.password = '';
     }
 
   }

@@ -9,7 +9,8 @@ import { RegisterComponent } from './register/register/register.component';
 import { UserComponent } from './user/user.component';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { NotificationModule } from './notification.module';
+import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
+import { ProfilComponent } from './profil/profil.component';
 
 
 
@@ -20,17 +21,17 @@ import { NotificationModule } from './notification.module';
     LoginComponent,
     RegisterComponent,
     UserComponent,
-  ],
+    ProfilComponent,  ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    NotificationModule
+    SnotifyModule
 
   ],
   providers: [AuthenticationGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true } ],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, { provide: 'SnotifyToastConfig', useValue: ToastDefaults}, SnotifyService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
