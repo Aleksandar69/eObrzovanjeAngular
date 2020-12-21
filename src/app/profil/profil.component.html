@@ -1,43 +1,67 @@
 <main>
   <h2>Moj profil</h2>
-<!--Author box-->
-<div class="author-box">
-<!--Name-->
-<div id="bigDiv" class="col-12 col-lg-12 row">
-    <div class="card card-body col-3 col-lg-3">
-      <h2 class="card-title">{{user.ime}} {{user.prezime}} </h2>
-      <img src="../../assets/student.png">
-  </div>
-  <div  class="card card-body col-lg-8">
+  <!--Author box-->
+  <div class="author-box">
+    <!--Name-->
+    <div id="bigDiv" class="col-12 col-lg-12 row">
+      <div class="card card-body col-3 col-lg-3">
+        <h2 class="card-title">{{ user.ime }} {{ user.prezime }}</h2>
+        <img src="../../assets/student.png" />
+      </div>
+      <div class="card card-body col-lg-8">
+        <ul class="list-group" id="information">
+          <li>
+            Ime
+            <p>{{ user.ime }}</p>
+          </li>
+          <li>
+            Prezime
+            <p>{{ user.prezime }}</p>
+          </li>
+          <li>
+            Adresa
+            <p>{{ user.adresa }}</p>
+          </li>
+          <li *ngIf="user.role === 'STUDENT'">
+            Broj telefona
+            <p>{{ user.brojTelefona }}</p>
+          </li>
+        </ul>
+          <button
+            id="lozinka"
+            class="btn btn-primary"
+            type="button"
+            (click)="addModal.show()"
+          >
+            Promena lozinke
+          </button>
+          <button
+            *ngIf="user.role === 'STUDENT'"
+            id="brojTelefona"
+            class="btn btn-primary"
+            type="button"
+            (click)="addTelefon.show(); izmenaBroja(user)"
+          >
+            Promena broja
+          </button>
+        </div>
+    </div>
 
-                <ul class="list-group"  id="information" >
-
-                        <li >Ime <p>{{user.ime}}</p></li>
-                        <li >Prezime<p>{{user.prezime}}</p></li>
-                        <li >Adresa <p>{{user.adresa}}</p></li>
-                        <li  *ngIf="user.role === 'STUDENT'">Broj telefona <p>{{user.brojTelefona}}</p></li>
-
-                      </ul>
-                      <div id="telegramIconLocation" *ngIf="user.role === 'STUDENT'">
-                              <button type="button" id="telegramAlert" (click)=" chatbotModal.show(); izmeniPrijavuChatBot(user);"><img id="telegram_icon" src="../../assets/telegram.png" ></button>
-                      </div>
-                      <button id="lozinka" class="btn btn-primary" type="button" (click)="addModal.show();" >Promena lozinke</button>
-                      <button  *ngIf="user.role === 'STUDENT' "  id="brojTelefona" class="btn btn-primary" type="button" (click)="addTelefon.show(); izmenaBroja(user);" >Promena broja</button>
-
-
-                  </div>
-
-  </div>
-
-<div *ngIf="authService.getCurrentUser() != undefined && authService.getCurrentUser() != null && authService.getCurrentUser().roles[0] == 'STUDENT'">
-        <br><hr>
-        <h3 class="h3-responsive text-center">Prijavljeni ispiti</h3>
-              <div class=" col-12 col-lg-12">
+    <div
+      *ngIf="
+        authService.getUserFromLocalCache() != undefined &&
+        authService.getUserFromLocalCache() != null &&
+        authService.getUserFromLocalCache().role == 'STUDENT'
+      "
+    >
+      <br />
+      <hr />
+      <h3 class="h3-responsive text-center">Prijavljeni ispiti</h3>
+      <div class="col-12 col-lg-12">
         <table class="table" style="table-layout: fixed">
-              <!--Table head-->
-              <thead class="blue-grey lighten-4">
-
-          <tr>
+          <!--Table head-->
+          <thead class="blue-grey lighten-4">
+            <tr>
               <th>Predmet</th>
               <th>Datum Prijave</th>
               <th>Datum Ispita</th>
@@ -48,133 +72,375 @@
               <th>Ocena</th>
               <th>Ocenjeno</th>
               <th></th>
-          </tr>
-          <tbody  *ngFor="let prijava of prijavljeniPredmeti" value = [ispiti]>
-              <tr>
-                  <td>{{prijava.ispit.predmet.naziv}}</td>
-                  <td>{{prijava.datumPrijave | date:"yyyy/MM/dd"}}</td>
-                  <td>{{prijava.ispit.datum | date:"yyyy/MM/dd"}}</td>
-                  <td>{{prijava.ispit.nastavnik.ime + ' ' + prijava.ispit.nastavnik.prezime}}</td>
-                  <td>{{prijava.predispitniBodovi}}</td>
-                  <td>{{prijava.osvojeniBodoviUsmeni}}</td>
-                  <td>{{prijava.osvojeniBodoviIspit}}</td>
-                  <td>{{prijava.ocena}}</td>
-                  <td>{{prijava.ocenjeno? "DA" : "NE"}}</td>
-                  <td><button id="odjavaButton" class="btn btn-danger" [disabled] = "prijava.ocenjeno || !compareDates(prijava.datumPrijave)" (click)='odjavi(prijava.id); deleteModal.show();'>ODJAVA</button></td>
-              </tr>
+            </tr>
+          </thead>
+
+          <tbody *ngFor="let prijava of prijavljeniPredmeti" value="[ispiti]">
+            <tr>
+              <td>{{ prijava.ispit.predmet.naziv }}</td>
+              <td>{{ prijava.datumPrijave | date: "yyyy/MM/dd" }}</td>
+              <td>{{ prijava.ispit.datum | date: "yyyy/MM/dd" }}</td>
+              <td>
+                {{
+                  prijava.ispit.nastavnik.ime +
+                    " " +
+                    prijava.ispit.nastavnik.prezime
+                }}
+              </td>
+              <td>{{ prijava.predispitniBodovi }}</td>
+              <td>{{ prijava.osvojeniBodoviUsmeni }}</td>
+              <td>{{ prijava.osvojeniBodoviIspit }}</td>
+              <td>{{ prijava.ocena }}</td>
+              <td>{{ prijava.ocenjeno ? "DA" : "NE" }}</td>
+              <td><button id="odjavaButton" class="btn btn-danger" [disabled] = "prijava.ocenjeno || !compareDates(prijava.datumPrijave)" (click)='odjavi(prijava.id); deleteModal.show();'>ODJAVA</button></td>
+            </tr>
           </tbody>
-          <tbody *ngIf="prijavljeniPredmeti == undefined || prijavljeniPredmeti.length === 0">
-                  <tr><td style="text-align: center" colspan="10">Trenutno nema prijavljenih ispita...</td></tr>
-              </tbody>
+          <tbody
+            *ngIf="
+              prijavljeniPredmeti == undefined ||
+              prijavljeniPredmeti.length === 0
+            "
+          >
+            <tr>
+              <td style="text-align: center" colspan="10">
+                Trenutno nema prijavljenih ispita...
+              </td>
+            </tr>
+          </tbody>
         </table>
-    </div>
-   <br><hr>
-    <h3 class="h3-responsive text-center">Polozeni ispiti</h3>
-          <div class=" col-12 col-lg-12">
-    <table class="table" style="table-layout: fixed">
+      </div>
+      <br />
+      <hr />
+      <h3 class="h3-responsive text-center">Polozeni ispiti</h3>
+      <div class="col-12 col-lg-12">
+        <table class="table" style="table-layout: fixed">
           <!--Table head-->
           <thead class="blue-grey lighten-4">
-      <tr>
-          <th>Predmet</th>
-          <th>ESPB</th>
-          <th>Datum Ispita</th>
-          <th>Profesor</th>
-          <th>Ukupno bodova</th>
-          <th>Ocena</th>
-      </tr>
-      <tbody *ngFor="let prijava of polozeni" value = [polozeni]>
-              <tr>
-                      <td>{{prijava.ispit.predmet.naziv}}</td>
-                      <td>{{prijava.ispit.predmet.espb}}</td>
-                      <td>{{prijava.ispit.datum | date:"yyyy/MM/dd"}}</td>
-                      <td>{{prijava.ispit.nastavnik.ime + ' ' + prijava.ispit.nastavnik.prezime}}</td>
-                      <td>{{prijava.osvojeniBodoviIspit}}</td>
-                      <td>{{prijava.ocena | number:'1.0-0'}}</td>
-                    </tr>
-      </tbody>
-      <tbody *ngIf="polozeni == undefined || polozeni.length === 0">
-              <tr><td style="text-align: center" colspan="6">Trenutno nema polozenih ispita...</td></tr>
+            <tr>
+              <th>Predmet</th>
+              <th>ESPB</th>
+              <th>Datum Ispita</th>
+              <th>Profesor</th>
+              <th>Ukupno bodova</th>
+              <th>Ocena</th>
+            </tr>
+          </thead>
+
+          <tbody *ngFor="let prijava of polozeni" value="[polozeni]">
+            <tr>
+              <td>{{ prijava.ispit.predmet.naziv }}</td>
+              <td>{{ prijava.ispit.predmet.espb }}</td>
+              <td>{{ prijava.ispit.datum | date: "yyyy/MM/dd" }}</td>
+              <td>
+                {{
+                  prijava.ispit.nastavnik.ime +
+                    " " +
+                    prijava.ispit.nastavnik.prezime
+                }}
+              </td>
+              <td>{{ prijava.osvojeniBodoviIspit }}</td>
+              <td>{{ prijava.ocena | number: "1.0-0" }}</td>
+            </tr>
           </tbody>
-    </table>
-</div>
-<br><hr>
-<h3 class="h3-responsive text-center">Nepolozeni ispiti</h3>
+          <tbody *ngIf="polozeni == undefined || polozeni.length === 0">
+            <tr>
+              <td style="text-align: center" colspan="6">
+                Trenutno nema polozenih ispita...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <hr />
+      <h3 class="h3-responsive text-center">Nepolozeni ispiti</h3>
 
-      <div class=" col-12 col-lg-12">
-<table class="table" style="table-layout: fixed">
-      <!--Table head-->
-      <thead class="blue-grey lighten-4">
-  <tr>
-      <th>Predmet</th>
-      <th>Oznaka</th>
-      <th>ESPB</th>
+      <div class="col-12 col-lg-12">
+        <table class="table" style="table-layout: fixed">
+          <!--Table head-->
+          <thead class="blue-grey lighten-4">
+            <tr>
+              <th>Predmet</th>
+              <th>Oznaka</th>
+              <th>ESPB</th>
+            </tr>
+          </thead>
 
-  </tr>
-  <tbody *ngFor="let ispit of nepolozeni" value = [nepolozeni]>
-          <tr>
-                  <td>{{ispit.naziv}}</td>
-                  <td>{{ispit.oznaka}}</td>
-                  <td>{{ispit.espb}}</td>
-                </tr>
-  </tbody>
-  <tbody *ngIf="nepolozeni == undefined || nepolozeni.length === 0">
-          <tr><td style="text-align: center" colspan="3">Trenutno nema nepolozenih predmeta...</td></tr>
-      </tbody>
-</table>
-</div>
+          <tbody *ngFor="let ispit of nepolozeni" value="[nepolozeni]">
+            <tr>
+              <td>{{ ispit.naziv }}</td>
+              <td>{{ ispit.oznaka }}</td>
+              <td>{{ ispit.espb }}</td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="nepolozeni == undefined || nepolozeni.length === 0">
+            <tr>
+              <td style="text-align: center" colspan="3">
+                Trenutno nema nepolozenih predmeta...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <hr />
+      <h3 class="h3-responsive text-center">Uplate</h3>
 
-<br><hr>
-<h3 class="h3-responsive text-center">Uplate</h3>
+      <div class="col-12 col-lg-12">
+        <table class="table" style="table-layout: fixed; border-radius: 10px">
+          <thead class="blue-grey lighten-4">
+            <tr>
+              <th>Datum uplate</th>
+              <th>Iznos uplate</th>
+              <th>Poziv na broj</th>
+              <th>Svrha uplate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let uplata of uplate" value="[uplate]">
+              <td>{{ uplata.datumUplate }}</td>
+              <td>{{ uplata.iznosUplate }}RSD</td>
+              <td>{{ uplata.pozivNaBroj }}</td>
+              <td>{{ uplata.svrhaUplate }}</td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="uplate == undefined || uplate.length === 0">
+            <tr>
+              <td style="text-align: center" colspan="4">
+                Trenutno nema evidentiranih uplata...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <div class=" col-12 col-lg-12">
-              <table class="table" style="table-layout: fixed; border-radius: 10px">
-                      <thead class="blue-grey lighten-4"  >
-                        <tr>
-                          <th>Datum uplate</th>
-                          <th>Iznos uplate</th>
-                          <th>Poziv na broj</th>
-                          <th>Svrha uplate</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let uplata of uplate"  value = [uplate]>
-                          <td>{{uplata.datumUplate}}</td>
-                          <td>{{uplata.iznosUplate}}RSD</td>
-                          <td>{{uplata.pozivNaBroj}}</td>
-                          <td>{{uplata.svrhaUplate}}</td>
-                        </tr>
-                      </tbody>
-                      <tbody *ngIf="uplate == undefined || uplate.length === 0">
-                              <tr><td style="text-align: center" colspan="4">Trenutno nema evidentiranih uplata...</td></tr>
-                          </tbody>
-                  </table>
-              </div>
-
-      <br><hr>
+      <br />
+      <hr />
       <h3 class="h3-responsive text-center">Dokumenti</h3>
 
-      <div class=" col-12 col-lg-12">
-          <table class="table" style="table-layout: fixed">
-                <!--Table head-->
-                <thead class="blue-grey lighten-4">
-
+      <div class="col-12 col-lg-12">
+        <table class="table" style="table-layout: fixed">
+          <!--Table head-->
+          <thead class="blue-grey lighten-4">
             <tr>
-                <th>Naziv</th>
-                <th>Datum postavljanja</th>
-                <th>Preuzimanje</th>
+              <th>Naziv</th>
+              <th>Datum postavljanja</th>
+              <th>Preuzimanje</th>
             </tr>
-            <tbody class="table col-12 col-lg-12" style="table-layout: fixed; width:100%;" >
-                <tr *ngFor="let dokument of dokumenti">
-                   <td>{{dokument.naziv}}</td>
-                   <td>{{dokument.datumDokumenta}}</td>
-                   <td><a href="{{dokument.sadrzaj}}"><button class ="btn btn-primary">PREUZMI</button></a></td>
-               </tr>
+          </thead>
+
+          <tbody
+            class="table col-12 col-lg-12"
+            style="table-layout: fixed; width: 100%"
+          >
+            <tr *ngFor="let dokument of dokumenti">
+              <td>{{ dokument.naziv }}</td>
+              <td>{{ dokument.datumDokumenta }}</td>
+              <td>
+                <a href="{{ dokument.sadrzaj }}"
+                  ><button class="btn btn-primary">PREUZMI</button></a
+                >
+              </td>
+            </tr>
           </tbody>
           <tbody *ngIf="dokumenti == undefined || dokumenti.length === 0">
-                  <tr><td style="text-align: center" colspan="3">Trenutno nema dokumenata...</td></tr>
+            <tr>
+              <td style="text-align: center" colspan="3">
+                Trenutno nema dokumenata...
+              </td>
+            </tr>
           </tbody>
-          </table>
-          </div>
+        </table>
+      </div>
     </div>
-</div>
+  </div>
 </main>
+
+<div
+  mdbModal
+  #addModal="mdb-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  aria-hidden="true"
+  [config]="{ backdrop: false, ignoreBackdropClick: false }"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content col-8 col-lg-8">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="addModal.hide(); form.reset()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Promena lozinke</h4>
+      </div>
+      <div class="col-4 col-lg-4"></div>
+      <form #form="ngForm">
+        <div class="form-group form-black label-floating is-empty">
+          <label class="control-label">Trenutna lozinka</label>
+          <input
+            type="password"
+            class="form-control"
+            #staraLozinka="ngModel"
+            name="currentPassword"
+            [(ngModel)]="currentPassword"
+          />
+        </div>
+        <div class="form-group form-black label-floating is-empty">
+          <label class="control-label">Nova lozinka</label>
+          <input
+            type="password"
+            class="form-control"
+            #novaLozinka="ngModel"
+            name="newPassword"
+            [(ngModel)]="newPassword"
+          />
+        </div>
+        <div
+          *ngIf="novaLozinka.touched && novaLozinka.value.length < 4"
+          style="color: red"
+        >
+          Password needs to be at least 4 characters long!
+        </div>
+        <div class="form-group form-black label-floating is-empty">
+          <label class="control-label">Ponovi novu lozinku</label>
+          <input
+            type="password"
+            class="form-control"
+            #potvrdiLozinku="ngModel"
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+          />
+        </div>
+        <div
+          *ngIf="
+            novaLozinka.touched &&
+            potvrdiLozinku.touched &&
+            novaLozinka.value != potvrdiLozinku.value
+          "
+          style="color: red"
+        >
+          Passwords don't match!
+        </div>
+      </form>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary waves-light"
+          aria-label="Close"
+          (click)="addModal.hide(); form.reset()"
+          mdbWavesEffect
+        >
+          Otkazi
+        </button>
+        <button
+          type="button"
+          [disabled]="
+            novaLozinka.value == null ||
+            novaLozinka.value == undefined ||
+            novaLozinka.value.length < 4 ||
+            novaLozinka.value != potvrdiLozinku.value
+          "
+          (click)="changePassword(); addModal.hide(); form.reset()"
+          class="btn bg-red relative waves-light"
+          mdbWavesEffect
+        >
+          Sacuvaj
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  mdbModal
+  #addTelefon="mdb-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myBasicModalLabel"
+  aria-hidden="true"
+  [config]="{ backdrop: false, ignoreBackdropClick: false }"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content col-8 col-lg-8">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="addTelefon.hide()"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">
+          Promena broja telefona
+        </h4>
+      </div>
+      <div class="col-4 col-lg-4"></div>
+      <form #form="ngForm">
+        <div class="form-group form-black label-floating is-empty">
+          <label class="control-label">Broj telefona</label>
+          <input
+            type="text"
+            class="form-control"
+            #brojTelefona="ngModel"
+            name="brojTelefona"
+            [(ngModel)]="user.brojTelefona"
+          />
+        </div>
+        <!-- Switch -->
+      </form>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary waves-light"
+          aria-label="Close"
+          (click)="addTelefon.hide()"
+          mdbWavesEffect
+        >
+          Otkazi
+        </button>
+        <button
+          type="button"
+          [disabled]="
+            brojTelefona.value == null ||
+            brojTelefona.value == undefined ||
+            brojTelefona.value.length < 11
+          "
+          (click)="posaljiIzmenuBroja(); addTelefon.hide()"
+          class="btn bg-red relative waves-light"
+          mdbWavesEffect
+        >
+          Sacuvaj
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div mdbModal #deleteModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModal.hide()">
+                  <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="modal-title w-100" id="myModalLabel">Odjavi ispit?</h4>
+          </div>
+          <div class="modal-body">
+              Da li ste sigurni da zelite da odjavite ispit?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="deleteModal.hide()" mdbWavesEffect>Ne</button>
+              <button type="button" (click)="confirmOdjava();deleteModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<h3 class="h3-responsive text-left">Ispiti iz predmeta {{predmet.naziv}}</h3>
+      <div class=" col-12 col-lg-12">
+<table class="table" style="table-layout: fixed">
+      <!--Table head-->
+      <thead class="blue-grey lighten-4">
+
+  <tr>
+      <th>Datum ispita</th>
+      <th>Rok za prijavu</th>
+      <th>Bodovi na ispitu</th>
+      <th></th>
+  </tr>
+  <tbody *ngFor="let ispit of ispiti" class="table col-12 col-lg-12" style="table-layout: fixed; width:100%;" >
+        <tr>
+           <td>{{ispit.datum}}</td>
+           <td>{{ispit.rokZaPrijavu}}</td>
+           <td>{{ispit.usmeniUkupnoBodova}}</td>
+           <td><button (click)="ispit.showPrijave = !ispit.showPrijave" class="btn btn-primary" >Prijave</button></td>
+       </tr>
+       <tr *ngIf="ispit.showPrijave"><td colspan="4" style="padding:0"><app-predmeti-ispiti-prijave [ispit]="ispit" class="card card-body" style="background: rgb(230, 230, 230);"></app-predmeti-ispiti-prijave></td></tr>
+    </tbody>
+    <tbody *ngIf="ispiti.length==0">
+        <tr><td colspan="4" style="text-align: center">Trenutno nema ispita za predmet...</td></tr>
+    </tbody>
+</table>
+</div>

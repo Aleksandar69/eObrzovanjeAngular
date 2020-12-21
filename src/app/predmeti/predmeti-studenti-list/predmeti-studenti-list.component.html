@@ -1,0 +1,24 @@
+<h3 class="h3-responsive text-left">Studenti koji pohadjaju predmet {{predmet.naziv}}</h3>
+      <div class=" col-12 col-lg-12">
+<table class="table" style="table-layout: fixed">
+      <!--Table head-->
+      <thead class="blue-grey lighten-4">
+
+  <tr>
+      <th>Broj indexa</th>
+      <th>Ime i Prezime</th>
+      <th></th>
+  </tr>
+  <tbody *ngFor="let student of studenti" class="table col-12 col-lg-12" style="table-layout: fixed; width:100%;" >
+        <tr>
+           <td>{{student.brojIndexa}}</td>
+           <td>{{student.ime + ' ' + student.prezime}}</td>
+           <td><button (click)="student.showPredispitne = !student.showPredispitne" class="btn alert-primary" >Predispitne Obaveze</button></td>
+       </tr>
+       <tr *ngIf="student.showPredispitne"><td colspan="3" style="padding:0"><app-predmeti-studenti-predispitne-obaveze [student]="student" [predmet]="predmet" class="card card-body" style="background: rgb(230, 230, 230);"></app-predmeti-studenti-predispitne-obaveze></td></tr>
+    </tbody>
+    <tbody *ngIf="studenti.length==0">
+        <tr><td colspan="3" style="text-align: center">Trenutno nema studenata na predmetu...</td></tr>
+    </tbody>
+</table>
+</div>

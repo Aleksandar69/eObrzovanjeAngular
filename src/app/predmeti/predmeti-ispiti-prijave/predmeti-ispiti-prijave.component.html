@@ -1,0 +1,54 @@
+<h3 class="h4-responsive text-left">Prijave ispita</h3>
+<div class=" col-12 col-lg-12">
+<table class="table" style="table-layout: fixed">
+      <!--Table head-->
+      <thead class="blue-grey lighten-4">
+
+  <tr>
+      <th>Datum Prijave</th>
+      <th>Student</th>
+      <th>Predispitni bodovi</th>
+      <th>Usmeni bodovi</th>
+      <th>Polozio</th>
+      <th>Ocenjeno</th>
+      <th></th>
+  </tr>
+  <tbody class="table col-12 col-lg-12" style="table-layout: fixed; width:100%;" >
+        <tr *ngFor="let prijava of prijave">
+           <td>{{prijava.datumPrijave | date:"yyyy/MM/dd"}}</td>
+           <td>{{prijava.student.ime + " " + prijava.student.prezime}}</td>
+           <td>{{prijava.predispitniBodovi}}</td>
+           <td>{{prijava.osvojeniBodoviUsmeni}}</td>
+           <td>{{prijava.polozio? 'DA': 'NE'}}</td>
+           <td>{{prijava.ocenjeno? 'DA': 'NE'}}</td>
+           <td><button [disabled]="prijava.ocenjeno" (click)="oceniPrijavu(prijava); editModal.show()" class="btn btn-primary" >OCENI</button></td>
+       </tr>
+       <tr *ngIf="prijave.length==0">
+           <td colspan="7" style="text-align: center">Trenutno nema prijava...</td>
+       </tr>
+    </tbody>
+</table>
+</div>
+
+<div mdbModal #editModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="editModal.hide()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title w-100" id="myModalLabel">Oceni prijavu</h4>
+                </div>
+                <div class="modal-body">
+
+                  <label>Osvojeno bodova na usmenom ispitu: </label>
+                  <input type="number" class="form-control" #osvojeniBodoviUsmeni="ngModel" [(ngModel)]="currentPrijava.osvojeniBodoviUsmeni">
+                  <div *ngIf="osvojeniBodoviUsmeni.touched && osvojeniBodoviUsmeni.value<0" style="color: red"> Broj osvojenih bodova ne sme biti manje od 0</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="editModal.hide(); reset();" mdbWavesEffect>Otkazi</button>
+                    <button type="button" [disabled]="osvojeniBodoviUsmeni.value<0" (click)="save();editModal.hide();" class="btn bg-red relative waves-light" mdbWavesEffect>Sacuvaj</button>
+                </div>
+            </div>
+        </div>
+      </div>

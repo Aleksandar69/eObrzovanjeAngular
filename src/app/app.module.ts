@@ -11,6 +11,13 @@ import { AuthenticationGuard } from './guard/authentication.guard';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { ProfilComponent } from './profil/profil.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { PredmetiIspitiListComponent } from './predmeti/predmeti-ispiti-list/predmeti-ispiti-list.component';
+import { PredmetiIspitiPrijaveComponent } from './predmeti/predmeti-ispiti-prijave/predmeti-ispiti-prijave.component';
+import { PredmetiStudentiListComponent } from './predmeti/predmeti-studenti-list/predmeti-studenti-list.component';
+import { PredmetiStudentiPredispitneObavezeComponent } from './predmeti/predmeti-studenti-predispitne-obaveze/predmeti-studenti-predispitne-obaveze.component';
+import { PredmetiItemComponent } from './predmeti/predmeti-item/predmeti-item.component';
+import { PredmetiListComponent } from './predmeti/predmeti-list/predmeti-list.component';
 
 
 
@@ -21,13 +28,21 @@ import { ProfilComponent } from './profil/profil.component';
     LoginComponent,
     RegisterComponent,
     UserComponent,
-    ProfilComponent,  ],
+    ProfilComponent,
+    PredmetiIspitiListComponent,
+    PredmetiIspitiPrijaveComponent,
+    PredmetiStudentiListComponent,
+    PredmetiStudentiPredispitneObavezeComponent,
+    PredmetiItemComponent,
+    PredmetiListComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    SnotifyModule
+    SnotifyModule,
+    MDBBootstrapModule.forRoot()
 
   ],
   providers: [AuthenticationGuard,

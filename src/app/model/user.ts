@@ -1,5 +1,5 @@
 export class User {
-    public userId: string;
+    public id: string;
     public ime: string;
     public prezime: string;
     public username: string;
@@ -8,9 +8,10 @@ export class User {
     public jmbg: string;
     public adresa: string;
     private password: string;
+    public brojTelefona: string;
 
     constructor() {
-      this.userId = '';
+      this.id = '';
       this.ime = '';
       this.prezime = '';
       this.username = '';
@@ -19,6 +20,7 @@ export class User {
       this.jmbg = '';
       this.adresa = '';
       this.password = '';
+      this.brojTelefona = '';
     }
 
   }

@@ -1,0 +1,50 @@
+<h3 class="h4-responsive text-left">Predispitne obaveze studenta {{student.ime + ' ' + student.prezime}} ({{student.brojIndexa}})</h3>
+<div class=" col-12 col-lg-12">
+<table class="table" style="table-layout: fixed">
+      <!--Table head-->
+      <thead class="blue-grey lighten-4">
+
+  <tr>
+      <th>Naziv</th>
+      <th>Minimalan broj bodova</th>
+      <th>Osvojen broj bodova</th>
+      <th>Polozio</th>
+      <th>Datum poslednjeg polaganja</th>
+      <th></th>
+  </tr>
+  <tbody class="table col-12 col-lg-12" style="table-layout: fixed; width:100%;" >
+        <tr *ngFor="let predispitnaObaveza of predmetPredispitneObaveze">
+           <td>{{predispitnaObaveza.sablon.naziv}}</td>
+           <td>{{predispitnaObaveza.sablon.minimumBodova}}</td>
+           <td>{{predispitnaObaveza.osvojeniBodovi + "/" + predispitnaObaveza.sablon.ukupnoBodova}}</td>
+           <td>{{predispitnaObaveza.polozio? 'DA': 'NE'}}</td>
+           <td>{{predispitnaObaveza.datum}}</td>
+           <td><button (click)="addPredispitnaObaveza(predispitnaObaveza.sablon.id); addModal.show()" class="btn alert-primary" >NOVO</button></td>
+       </tr>
+       <!-- <tr *ngIf="showPredispitne"><td colspan="3" style="padding:0"><app-predmeti-studenti-predispitne-obaveze [student]="student" [predmet]="predmet" class="card card-body" style="background: rgb(230, 230, 230);"></app-predmeti-studenti-predispitne-obaveze></td></tr> -->
+       </tbody>
+</table>
+</div>
+
+<div mdbModal #addModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="addModal.hide()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title w-100" id="myModalLabel">Dodaj ispit</h4>
+                </div>
+                <div class="modal-body">
+
+                  <label>Osvojeno bodova: </label>
+                  <input type="number" class="form-control" #osvojeniBodovi="ngModel" [(ngModel)]="currentPredispitnaObaveza.osvojeniBodovi">
+                  <div *ngIf="osvojeniBodovi.touched && osvojeniBodovi.value<0" style="color: red"> Broj osvojenih bodova ne sme biti manje od 0</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide(); reset();" mdbWavesEffect>Otkazi</button>
+                    <button type="button" [disabled]="osvojeniBodovi.value<0" (click)="save();addModal.hide();" class="btn bg-red relative waves-light" mdbWavesEffect>Sacuvaj</button>
+                </div>
+            </div>
+        </div>
+      </div>
