@@ -1,0 +1,129 @@
+<div class="card card-body" style="background: white;">
+  <h3 class="h3-responsive text-left">Termini ispita</h3>
+<div class=" col-12 col-lg-12">
+<table class="table" style="table-layout: fixed">
+<!--Table head-->
+<thead class="blue-grey lighten-4">
+
+<tr>
+<th>Datum</th>
+<th>Rok za prijavu</th>
+<th>Nastavnik</th>
+<th>Usmeni bodovi</th>
+<th>Usmeni minimum</th>
+<th></th>
+<th></th>
+</tr>
+<tbody class="table col-12 col-lg-12" style="table-layout: fixed; width:100%;" >
+  <tr *ngFor="let ispit of ispiti">
+     <td>{{ispit.datum}}</td>
+     <td>{{ispit.rokZaPrijavu}}</td>
+     <td>{{ispit.nastavnik.ime + ' ' + ispit.nastavnik.prezime}}</td>
+     <td>{{ispit.usmeniUkupnoBodova}}</td>
+     <td>{{ispit.usmeniMinimumBodova}}</td>
+     <td><button (click)="editIspit(ispit); addModal.show();" class="btn alert-primary" >Izmeni</button></td>
+     <td><button (click)="deleteIspit(ispit.id); basicModal.show();" class="btn bg-red" >Obrisi</button></td>
+
+ </tr>
+</tbody>
+<tbody *ngIf="ispiti.length==0">
+  <tr>
+      <td colspan="7" style="text-align: center">Trenutno nema ispita...</td>
+  </tr>
+</tbody>
+</table>
+<button class="btn btn-primary" (click)="addIspit();addModal.show()" >ADD ISPIT</button>
+</div>
+<div class="d-flex justify-content-center">
+<nav class="my-4 pt-2">
+<ul class="pagination pagination-circle pg-blue mb-0">
+  <li class="page-item clearfix d-none d-md-block" (click)="changePage(1)" [ngClass]="{disabled: activePage == 1}">
+    <a class="page-link">Prva</a>
+  </li>
+  <li class="page-item" (click)="changePage(activePage-1)" [ngClass]="{disabled: activePage == 1}">
+    <a class="page-link" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+      <span class="sr-only">Prethodna</span>
+    </a>
+  </li>
+  <li *ngFor="let page of pageCount; let i = index;" class="page-item" [ngClass]="{active: i+1 == activePage, disabled: i+1 == activePage}">
+    <a class="page-link waves-light num" (click)="changePage(i+1)"  mdbWavesEffect>{{i+1}}</a>
+  </li>
+  <li class="page-item" (click)="changePage(activePage+1)" [ngClass]="{disabled: activePage == pageCount.length}">
+    <a class="page-link" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+      <span class="sr-only">Sledeca</span>
+    </a>
+  </li>
+  <li class="page-item clearfix d-none d-md-block" (click)="changePage(pageCount.length)" [ngClass]="{disabled: activePage == pageCount.length}">
+    <a class="page-link">Poslednja</a>
+  </li>
+
+</ul>
+</nav>
+</div>
+</div>
+
+<div mdbModal #basicModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+              <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">Da li zelite da obrisete ispit?</h4>
+      </div>
+      <div class="modal-body">
+          Da li ste sigurni da zelite da obrisete ispit?
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
+          <button type="button" (click)="deleteConfirm();basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+      </div>
+  </div>
+</div>
+</div>
+
+<div mdbModal #addModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="addModal.hide(); form.reset()">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title w-100" id="myModalLabel">Dodaj ispit</h4>
+        </div>
+        <div class="modal-body">
+          <form #form="ngForm">
+          <label>Datum ispita: </label>
+          <input name="datum" type="date" class="form-control" #datum="ngModel" [(ngModel)]="currentIspit.datum" min="{{firstDate}}">
+          <div *ngIf="datum.touched && (datum.invalid || datum.value < firstDate)" style="color: red"> *Izabrani datum nije dozvoljen! </div>
+          <br>
+          <label>Rok za prijavu: </label>
+          <input name="rokZaPrijavu" type="date" class="form-control" #rokZaPrijavu="ngModel" [(ngModel)]="currentIspit.rokZaPrijavu" min="{{firstDate}}">
+          <div *ngIf="rokZaPrijavu.touched && (rokZaPrijavu.invalid || rokZaPrijavu.value < firstDate)" style="color: red"> *Izabrani datum nije dozvoljen</div>
+          <div *ngIf="rokZaPrijavu.value > currentIspit.datum" style="color: red"> *Izabrani datum mora biti pre datuma ispita! </div>
+          <br>
+          <label>Bodovi na usmenom: </label>
+          <input name="usmeniUkupnoBodova" type="number" class="form-control" #usmeniBodova="ngModel" [(ngModel)]="currentIspit.usmeniUkupnoBodova">
+          <div *ngIf="usmeniBodova.touched && usmeniBodova.value<1" style="color: red"> Broj bodova na usmenom mora biti veci od 1</div>
+          <br>
+          <label>Minimalan broj bodova na usmenom: </label>
+          <input name="usmeniMinimumBodova" type="number" class="form-control" #usmeniMinimumBodova="ngModel" [(ngModel)]="currentIspit.usmeniMinimumBodova">
+          <div *ngIf="usmeniMinimumBodova.touched && usmeniMinimumBodova.value<0" style="color: red"> Minimalan broj bodova na usmenom ne sme biti manji od 0</div>
+          <div *ngIf="usmeniMinimumBodova.touched && usmeniBodova.touched && usmeniMinimumBodova.value>usmeniBodova.value" style="color: red"> Minimalan broj bodova na usmenom ne sme biti veci od ukupnog broja bodova</div>
+          <hr>
+          <label>Profesor</label>
+          <select name="nastavnik" #select class="form-control" [(ngModel)]="currentIspit.nastavnik" (change)="change($event.target)">
+            <option *ngFor="let nastavik of predmetNastavnici" value="{{nastavik.id}}">{{nastavik.ime}} {{nastavik.prezime}}</option>
+          </select>
+          <!-- <div *ngIf="select.invalid" style="color: red"> *jedan profesor mora biti odabran! </div> -->
+      </form>
+      </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide(); form.reset()" mdbWavesEffect>Otkazi</button>
+            <button type="button" [disabled]="(rokZaPrijavu.value > currentIspit.datum) || (rokZaPrijavu.invalid || rokZaPrijavu.value < firstDate) || (datum.invalid || datum.value < firstDate) || currentIspit.nastavnik=='' || currentIspit.nastavnik==null" (click)="saveConfirm();addModal.hide(); form.reset()" class="btn bg-red relative waves-light" mdbWavesEffect>Sacuvaj</button>
+        </div>
+    </div>
+</div>
+</div>

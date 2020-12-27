@@ -1,0 +1,88 @@
+<div class="card card-body" style="background: white;">
+  <h2 class="h2-responsive text-left">Uplate</h2>
+<div class=" col-12 col-lg-12">
+<table class="table" style="table-layout: fixed">
+<!--Table head-->
+<thead class="blue-grey lighten-4">
+  <tr>
+    <th>Datum uplate</th>
+    <th>Iznos uplate</th>
+    <th>Racun primaoca</th>
+    <th>Poziv na broj</th>
+    <th>Svrha uplate</th>
+  </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let uplata of uplate">
+    <td>{{uplata.datumUplate | date }}</td>
+    <td>{{uplata.iznosUplate}}RSD</td>
+    <td>{{uplata.racunPrimaoca}}</td>
+    <td>{{uplata.pozivNaBroj}}</td>
+    <td>{{uplata.svrhaUplate}}</td>
+  </tr>
+  <tr *ngIf="uplate.length==0"><td colspan="5" style="text-align: center">Trenutno nema uplata...</td></tr>
+</tbody>
+</table>
+<button (click)="addUplata(); addModal.show();" class="btn alert-primary" >Dodaj uplatu</button>
+</div>
+<div class="d-flex justify-content-center">
+  <nav class="my-4 pt-2">
+    <ul class="pagination pagination-circle pg-blue mb-0">
+      <li class="page-item clearfix d-none d-md-block" (click)="changePage(1)" [ngClass]="{disabled: activePage == 1}">
+        <a class="page-link">Prva</a>
+      </li>
+      <li class="page-item" (click)="changePage(activePage-1)" [ngClass]="{disabled: activePage == 1}">
+        <a class="page-link" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Prethodna</span>
+        </a>
+      </li>
+      <li *ngFor="let page of pageCount; let i = index;" class="page-item" [ngClass]="{active: i+1 == activePage, disabled: i+1 == activePage}">
+        <a class="page-link waves-light num" (click)="changePage(i+1)"  mdbWavesEffect>{{i+1}}</a>
+      </li>
+      <li class="page-item" (click)="changePage(activePage+1)" [ngClass]="{disabled: activePage == pageCount.length}">
+        <a class="page-link" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Sledeca</span>
+        </a>
+      </li>
+      <li class="page-item clearfix d-none d-md-block" (click)="changePage(pageCount.length)" [ngClass]="{disabled: activePage == pageCount.length}">
+        <a class="page-link">Poslednja</a>
+      </li>
+
+    </ul>
+  </nav>
+</div>
+
+
+<div mdbModal #addModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close pull-right" aria-label="Close" (click)="addModal.hide(); form.reset()">
+                  <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="modal-title w-100" id="myModalLabel">Dodavanje uplate</h4>
+          </div>
+          <div class="modal-body">
+            <form #form="ngForm">
+            <label>Iznos uplate:</label>
+            <input name="iznos" class="form-control" #iznosUplate="ngModel" minlength="1" type="number" placeholder="Iznos uplate" [(ngModel)]="currentUplata.iznosUplate">
+            <div *ngIf="iznosUplate.touched && iznosUplate.value <= 0" style="color: red">Minimalan iznos je 1 RSD!</div>
+            <div *ngIf="iznosUplate == undefined && iznosUplate.value.length<1" style="color: red">Morate uneti iznos.</div>
+            <br>
+            <label>Poziv na broj:</label>
+            <input name="pozivNaBroj" class="form-control" #pozivNaBroj="ngModel" minlength="2" type="number" placeholder="Poziv na broj" [(ngModel)]="currentUplata.pozivNaBroj">
+            <div *ngIf="pozivNaBroj.touched && pozivNaBroj.value.length<1" style="color: red">Morate uneti poziv na broj.</div>
+            <div *ngIf="pozivNaBroj.touched && pozivNaBroj.value < 2" style="color: red">Poziv na broj mora imati barem dve cifre.</div>
+            <br>
+            <label>Svrha uplate:</label>
+            <input name="svrhaUplate" class="form-control" #svrhaUplate="ngModel" minlength="1" type="text" placeholder="Svrha uplate" [(ngModel)]="currentUplata.svrhaUplate">
+          </form>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide(); form.reset()" mdbWavesEffect>Otkazi</button>
+              <button [disabled]="iznosUplate.value <= 0 || iznosUplate.value.length<1 || pozivNaBroj.value.length<1 || pozivNaBroj.value < 2" type="button" (click)="save();addModal.hide(); form.reset()" class="btn bg-red relative waves-light" mdbWavesEffect>Sacuvaj</button>
+          </div>
+      </div>
+  </div>
+</div>

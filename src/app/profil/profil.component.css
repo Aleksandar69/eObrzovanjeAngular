@@ -31,11 +31,6 @@ img{
   max-height: 15em;
 }
 
-#telegram_icon{
-  max-width: 3em !important;
-  max-height: 3em !important;
-}
-
 #content{
   width:100%;
   text-align: center;
@@ -77,29 +72,18 @@ img{
   color:white;
 }
 
-#bigDiv{
-  max-height: 20em;
-  margin-left: 1.3em;
-}
 
 #lozinka{
-  margin-left:  40em !important;
+  /* margin-left:  30em !important; */
   max-width: fit-content;
 
 
 }
 #brojTelefona{
 
-      margin-left:  40em !important;
+      /* margin-left:  30em !important; */
       max-width: fit-content;
 
   }
 
 
-#telegramIconLocation{
-
-  margin-left:  39em !important;
-  max-width: fit-content;
-  margin-top: -18em !important;
-  margin-bottom: 6em;
-}

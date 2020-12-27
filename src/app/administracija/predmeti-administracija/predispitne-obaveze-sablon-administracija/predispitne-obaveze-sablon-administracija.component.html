@@ -1,0 +1,81 @@
+<div class="card card-body" style="background: white;">
+  <h3 class="h3-responsive text-left">Sabloni predispitnih obaveza</h3>
+<div class=" col-12 col-lg-12">
+<table class="table" style="table-layout: fixed">
+<!--Table head-->
+<thead class="blue-grey lighten-4">
+
+<tr>
+<th>Naziv</th>
+<th>Ukupno bodova</th>
+<th>Minimum bodova</th>
+<th></th>
+<th></th>
+</tr>
+<tbody class="table col-12 col-lg-12" style="table-layout: fixed; width:100%;" >
+  <tr *ngFor="let sablon of sabloni">
+     <td>{{sablon.naziv}}</td>
+     <td>{{sablon.ukupnoBodova}}</td>
+     <td>{{sablon.minimumBodova}}</td>
+     <td><button (click)="editSablon(sablon); addModal.show();" class="btn alert-primary" >Izmeni</button></td>
+     <td><button (click)="deleteSablon(sablon); basicModal.show();" class="btn bg-red" >Obrisi</button></td>
+
+ </tr>
+ </tbody>
+</table>
+<button class="btn btn-primary" (click)="addSablon();addModal.show()" >ADD SABLON</button>
+</div>
+</div>
+
+<div mdbModal #basicModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+              <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title w-100" id="myModalLabel">Da li zelite da obrisete sablon?</h4>
+      </div>
+      <div class="modal-body">
+          Da li ste sigurni da zelite da obrisete sablon "{{deleteName}}"?
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
+          <button type="button" (click)="deleteConfirm();basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+      </div>
+  </div>
+</div>
+</div>
+
+<div mdbModal #addModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="addModal.hide(); form.reset()">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title w-100" id="myModalLabel">Dodaj ispit</h4>
+        </div>
+        <div class="modal-body">
+          <form #form="ngForm">
+          <label>Ukupan broj bodova: </label>
+          <input name="ukupnoBodova" type="number" class="form-control" #ukupnoBodova="ngModel" [(ngModel)]="currentSablon.ukupnoBodova">
+          <div *ngIf="ukupnoBodova.touched && ukupnoBodova.value<1" style="color: red"> Ukupan broj bodova mora biti veci od 1</div>
+          <br>
+          <label>Minimalan broj bodova: </label>
+          <input name="minimumBodova" type="number" class="form-control" #minimumBodova="ngModel" [(ngModel)]="currentSablon.minimumBodova">
+          <div *ngIf="minimumBodova.touched && minimumBodova.value<0" style="color: red"> Minimalan broj bodova ne sme biti manji od 1</div>
+          <div *ngIf="minimumBodova.touched && ukupnoBodova.touched && minimumBodova.value>ukupnoBodova.value" style="color: red"> Minimalan broj bodova mora biti manji ili jednak ukupnom broju bodova</div>
+          <hr>
+          <label>Naziv predispitne obaveze: </label>
+          <input name="naziv" type="text" class="form-control" #naziv="ngModel" [(ngModel)]="currentSablon.naziv">
+          <div *ngIf="naziv.touched && naziv.value.length<1" style="color: red"> Naziv predispitne obaveze ne sme biti prazan </div>
+      </form>
+      </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide(); form.reset()" mdbWavesEffect>Otkazi</button>
+            <button type="button" [disabled]=" (naziv.value==null || naziv.value==undefined || naziv.value.length<1) || minimumBodova.value<1 || minimumBodova.value>ukupnoBodova.value || ukupnoBodova.value<1" (click)="saveConfirm();addModal.hide(); form.reset()" class="btn bg-red relative waves-light" mdbWavesEffect>Sacuvaj</button>
+        </div>
+    </div>
+</div>
+</div>

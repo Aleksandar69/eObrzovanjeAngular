@@ -1,0 +1,147 @@
+<main>
+  <h2 style="text-align: center">Administracija nastavnika</h2>
+  <div class=" col-12 col-lg-12">
+          <form>
+                  <div class="form-group">
+                      <div class="input-group">
+                          <a routerLink="/administracija" id="backLink"><img id ="backBtn" src="../../../assets/back.png"></a>
+                          <input type="text" class="form-control" name="filterIme" placeholder="Unesi ime..." [(ngModel)]="filterIme">
+                          <input type="text" class="form-control" name="filterPrezime" placeholder="Unesi prezime..." [(ngModel)]="filterPrezime">
+                          <img src="../../../assets/searchIcon.png" (click)="getNastavnici()">
+                      </div>
+                  </div>
+              </form>
+  <table class="table" style="table-layout: fixed">
+    <!--Table head-->
+    <thead class="blue-grey lighten-4">
+        <tr>
+            <th>Username</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>JMBG</th>
+            <th>Address</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <!--Table head-->
+
+    <!--Table body-->
+    <tbody>
+        <tr *ngFor='let user of users'>
+            <td>{{user.username}}</td>
+            <td>{{user.ime}}</td>
+            <td>{{user.prezime}}</td>
+            <td>{{user.jmbg}}</td>
+            <td>{{user.adresa}}</td>
+
+            <td><button (click)="editProfessor(user.id, user); addModal.show();" class="btn btn-primary" >Izmeni</button></td>
+            <td><button (click)="deleteProfessor(user.id, user.ime + ' ' + user.prezime); basicModal.show();" class="btn btn-danger" >Obrisi</button></td>
+        </tr>
+        <tr *ngIf="users.length==0">
+            <td colspan="7" style="text-align: center">Trenutno nema nastavnika...</td>
+        </tr>
+        <button class="btn btn-primary" (click)="addNastavnik();addModal.show()" >Dodaj nastavnika</button>
+    </tbody>
+    <!--Table body-->
+  </table>
+  </div>
+  <div class="d-flex justify-content-center">
+          <nav class="my-4 pt-2">
+            <ul class="pagination pagination-circle pg-blue mb-0">
+              <li class="page-item clearfix d-none d-md-block" (click)="changePage(1)" [ngClass]="{disabled: activePage == 1}">
+                <a class="page-link">Prva</a>
+              </li>
+              <li class="page-item" (click)="changePage(activePage-1)" [ngClass]="{disabled: activePage == 1}">
+                <a class="page-link" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Prethodna</span>
+                </a>
+              </li>
+              <li *ngFor="let page of pageCount; let i = index;" class="page-item" [ngClass]="{active: i+1 == activePage, disabled: i+1 == activePage}">
+                <a class="page-link waves-light num" (click)="changePage(i+1)"  mdbWavesEffect>{{i+1}}</a>
+              </li>
+              <li class="page-item" (click)="changePage(activePage+1)" [ngClass]="{disabled: activePage == pageCount.length}">
+                <a class="page-link" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Sledeca</span>
+                </a>
+              </li>
+              <li class="page-item clearfix d-none d-md-block" (click)="changePage(pageCount.length)" [ngClass]="{disabled: activePage == pageCount.length}">
+                <a class="page-link">Poslednja</a>
+              </li>
+
+            </ul>
+          </nav>
+      </div>
+  <footer>
+      <div id="footerDiv">
+          <span> Page size: <select class="selectpicker" [(ngModel)]="size" name="size" (change)="changePage(1)">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+          </select>
+      </span>
+      </div>
+    </footer>
+          <!--/Pagination -->
+  </main>
+
+
+  <div mdbModal #basicModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                      <span aria-hidden="true">×</span>
+                  </button>
+                  <h4 class="modal-title w-100" id="myModalLabel"> Obrisi nastavnika {{deleteName}}?</h4>
+              </div>
+              <div class="modal-body">
+                  Da li ste sigurni da zelite da obrisete nastavnika {{deleteName}}?
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
+                  <button type="button" (click)="deleteConfirm();basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div mdbModal #addModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close pull-right" aria-label="Close" (click)="addModal.hide(); form.reset()">
+                          <span aria-hidden="true">×</span>
+                      </button>
+                      <h4 class="modal-title w-100" id="myModalLabel">{{isUpdate? "Izmena nastavnika" : "Dodavanje nastavnika"}}</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form #form="ngForm">
+                          <input name="username" class="form-control" #username="ngModel" minlength="4" type="text" placeholder="Username" [(ngModel)]="currentUser.username" (input)="checkForUsername()" (change)="checkForUsername()">
+                          <div *ngIf="username.touched && username.value.length<4" style="color: red">Username needs to be at least 4 characters long!</div>
+                          <div *ngIf="username!=undefined && username.value!=null && username.value.length>=4 && !valid" style="color: red">Username is already taken.</div>
+                          <input name="password" [hidden]="isUpdate" class="form-control" #password="ngModel" type="password" placeholder="Password" [(ngModel)]="currentUser.password">
+                          <div *ngIf="!isUpdate && password.touched && password.value.length<4" style="color: red">Password needs to be at least 4 characters long!</div>
+                          <input name="passwordRepeat" [hidden]="isUpdate" class="form-control" #passwordRepeatInput="ngModel" type="password" placeholder="Repeat Password" [(ngModel)]="passwordRepeat">
+                          <div *ngIf="!isUpdate && passwordRepeatInput.touched && password.touched && passwordRepeatInput.value!=null && password.value!=null && passwordRepeatInput.value!=password.value" style="color: red">Passwords don't match!</div>
+                          <input name="ime" class="form-control" #firstName="ngModel" type="text" placeholder="First name" [(ngModel)]="currentUser.ime">
+                          <div *ngIf="firstName.touched && firstName.value.length<1" style="color: red">First name must not be empty</div>
+                          <input name="prezime" class="form-control" #lastName="ngModel" type="text" placeholder="Last name" [(ngModel)]="currentUser.prezime">
+                          <div *ngIf="lastName.touched && lastName.value.length<1" style="color: red">Last name must not be empty</div>
+                          <input name="jmbg" [hidden]="isUpdate" class="form-control" #jmbg="ngModel" type="text" placeholder="JMBG" [(ngModel)]="currentUser.jmbg">
+                          <div *ngIf="!isUpdate && jmbg.touched && jmbg.value.length!=13" style="color: red">JMBG must be exactly 13 characters long!</div>
+                          <input name="adresa" class="form-control" #address="ngModel" type="text" placeholder="Address" [(ngModel)]="currentUser.adresa">
+                          <div *ngIf="address.touched && address.value.length<1" style="color: red">Address must not be empty</div>
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide();reset(); form.reset()" mdbWavesEffect>Otkazi</button>
+                      <button *ngIf="!isUpdate" type="button" [disabled]="!username.touched || (address.touched && address.value.length<1)|| (firstName.touched && firstName.value.length<1)|| (lastName.touched && lastName.value.length<1) || (username.touched && username.value.length<4) || !valid || password.value.length<4 || passwordRepeatInput.value!=password.value" (click)="saveConfirm();addModal.hide();form.reset()" class="btn btn-primary relative waves-light" mdbWavesEffect>Save</button>
+                      <button *ngIf="isUpdate" type="button" [disabled]="username==undefined || username.value==null || username.value.length<4 || !valid || firstName==undefined || firstName.value==null || firstName.value.length<1 || lastName==undefined || lastName.value==null || lastName.value.length<1" (click)="saveConfirm();addModal.hide();form.reset()" class="btn btn-primary relative waves-light" mdbWavesEffect>Save</button>
+                  </div>
+              </div>
+          </div>
+        </div>

@@ -18,6 +18,16 @@ import { PredmetiStudentiListComponent } from './predmeti/predmeti-studenti-list
 import { PredmetiStudentiPredispitneObavezeComponent } from './predmeti/predmeti-studenti-predispitne-obaveze/predmeti-studenti-predispitne-obaveze.component';
 import { PredmetiItemComponent } from './predmeti/predmeti-item/predmeti-item.component';
 import { PredmetiListComponent } from './predmeti/predmeti-list/predmeti-list.component';
+import { NavComponent } from './nav/nav.component';
+import { AdministracijaComponent } from './administracija/administracija.component';
+import { PredmetiAdministracijaComponent } from './administracija/predmeti-administracija/predmeti-administracija.component';
+import { ProfesorAdministracijaComponent } from './administracija/profesor-administracija/profesor-administracija.component';
+import { IspitiAdministracijaComponent } from './administracija/predmeti-administracija/ispiti-administracija/ispiti-administracija.component';
+import { StudentAdministracijaComponent } from './administracija/student-administracija/student-administracija.component';
+import { DokumentAdministracijaComponent } from './administracija/student-administracija/dokument-administracija/dokument-administracija.component';
+import { UplateAdministracijaComponent } from './administracija/student-administracija/uplate-administracija/uplate-administracija.component';
+import { PredispitneObavezeSablonAdministracijaComponent } from './administracija/predmeti-administracija/predispitne-obaveze-sablon-administracija/predispitne-obaveze-sablon-administracija.component';
+import { AngularDualListBoxModule } from 'angular-dual-listbox';
 
 
 
@@ -35,6 +45,15 @@ import { PredmetiListComponent } from './predmeti/predmeti-list/predmeti-list.co
     PredmetiStudentiPredispitneObavezeComponent,
     PredmetiItemComponent,
     PredmetiListComponent,
+    NavComponent,
+    AdministracijaComponent,
+    PredmetiAdministracijaComponent,
+    PredispitneObavezeSablonAdministracijaComponent,
+    ProfesorAdministracijaComponent,
+    IspitiAdministracijaComponent,
+    StudentAdministracijaComponent,
+    DokumentAdministracijaComponent,
+    UplateAdministracijaComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +61,8 @@ import { PredmetiListComponent } from './predmeti/predmeti-list/predmeti-list.co
     FormsModule,
     AppRoutingModule,
     SnotifyModule,
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
+    AngularDualListBoxModule
 
   ],
   providers: [AuthenticationGuard,

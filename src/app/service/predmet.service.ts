@@ -28,7 +28,7 @@ export class PredmetService {
 
 
   getPredmetByNastavnikId( id: number){
-    return this.http.get(`${this.host}/nastavnik/` + id + '/predmeti').pipe(
+    return this.http.get(`${this.host}/nastavnik/` + id + '/predmeti').pipe (
       map((res:any) => res)
     );
   }
@@ -38,4 +38,50 @@ export class PredmetService {
       map((res:any) => res));
   }
 
+  getNastavnici( predmetId: number){
+    return this.http.get(`${this.host}/predmeti/` + predmetId + '/nastavnici').pipe(map((res:any) => res)
+    );
+  }
+
+
+  deletePredmet(id){
+    return this.http.delete(`${this.host}` + '/predmeti/' + id).pipe(map((res:any) => res)
+  );
 }
+addPredmet(predmet){
+  return this.http.post(`${this.host}` + '/predmeti/', predmet).pipe(map((res:any) => res)
+  );
+}
+
+updatePredmet(id, predmet){
+  return this.http.put(`${this.host}` + '/predmeti/'+id, predmet).pipe(map((res:any) => res)
+  );
+}
+
+checkOznaka(oznaka){
+  return this.http.get(`${this.host}` + '/predmeti/oznaka-check?oznaka='+oznaka).pipe(map((res:any) => {
+      res.status
+  }));
+}
+
+postNastavnici(id, nastavnici){
+  var arraySend = [];
+  nastavnici.forEach(element => {
+    arraySend.push(element.id);
+  });
+   return this.http.post(`${this.host}` + '/predmeti/'+id+'/nastavnici', arraySend).pipe(map((res:any) => res)
+  );
+}
+
+
+postStudenti(id, studenti){
+  var arraySend = [];
+  studenti.forEach(element => {
+    arraySend.push(element.id);
+  });
+   return this.http.post(`${this.host}` + '/predmeti/'+id+'/studenti', arraySend).pipe(map((res:any) => res)
+   );
+}
+
+}
+

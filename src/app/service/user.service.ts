@@ -22,6 +22,15 @@ export class UserService {
     return this.http.post<User>(`${this.host}/users/add`, formData);
   }
 
+  addUser2(user){
+    var userType = "";
+    if (user.role =="ADMINISTRATOR") userType = "admin";
+    else if (user.role =="NASTAVNIK") userType = "nastavnik";
+    else userType = "studenti";
+    return this.http.post(`${this.host}/`+ userType, user).pipe(map((res:any) => res)
+    );
+  }
+
   public addUsersToLocalCache(users: User[]): void {
     localStorage.setItem('users', JSON.stringify(users));
   }
@@ -67,7 +76,7 @@ export class UserService {
   }
 
   getNastavnici(page = 0, size = 0, ime = "", prezime = ""){
-    return this.http.get(`${this.host}/studenti?size=`+size+'&page='+page+'&ime='+ime+'&prezime='+prezime, {observe: 'response'}).pipe(
+    return this.http.get(`${this.host}/nastavnik?size=`+size+'&page='+page+'&ime='+ime+'&prezime='+prezime, {observe: 'response'}).pipe(
       map((res:any) => {
       return res;
     }
@@ -110,5 +119,32 @@ export class UserService {
       map((res:any) => res)
     );
   }
+
+  deleteNastavnik(id){
+    return this.http.delete(`${this.host}` + '/nastavnik/' + id).pipe(map((res:any) => res)
+    );
+  }
+
+
+  checkForUsername(username){
+    return this.http.get(`${this.host}` + '/users/username-check?username='+username).pipe(map((res:any) => {
+        res.status
+    }))
+  }
+
+  updateUser(id, user){
+    var userType = "";
+    if (user.role =="ADMINISTRATOR") userType = "admin";
+    else if (user.role =="NASTAVNIK") userType = "nastavnik";
+    else userType = "studenti";
+    return this.http.put(`${this.host}/`+userType +'/'+id, user).pipe(map((res:any) => res)
+    );
+  }
+
+  deleteStudent(id){
+    return this.http.delete(`${this.host}` + '/studenti/' + id).pipe(map((res:any) => res)
+   );
+  }
+
 
 }

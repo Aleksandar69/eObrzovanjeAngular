@@ -1,0 +1,188 @@
+<main>
+  <h2 style="text-align: center">Administracija predmeta</h2>
+  <div class=" col-12 col-lg-12">
+      <form>
+              <div class="form-group">
+                  <div class="input-group">
+                      <a routerLink="/administracija" id="backLink"><img id ="backBtn" src="../../../assets/back.png"></a>
+                      <input type="text" class="form-control" name="filterIme" placeholder="Unesi naziv..." [(ngModel)]="filterNaziv">
+                      <img src="../../../assets/searchIcon.png" (click)="getPredmeti()">
+                  </div>
+              </div>
+          </form>
+    <table class="table" style="table-layout: fixed">
+        <!--Table head-->
+        <thead class="blue-grey lighten-4">
+
+    <tr>
+        <th>Predmet</th>
+        <th>Oznaka</th>
+        <th>Bodovi</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+        </thead>
+          <tbody *ngFor="let predmet of predmeti" style="table-layout: fixed; width:100%;" >
+                <tr>
+                  <td>{{predmet.naziv}}</td>
+                  <td>{{predmet.oznaka}}</td>
+                  <td>{{predmet.espb}}</td>
+                  <td><button (click)="showSabloni(predmet.id);" class="btn btn-primary predispitneBtn" style="font-size: 0.75em; padding: 0.5em;">Predispitne obaveze</button></td>
+                  <td><button (click)="showIspiti(predmet.id);" class="btn btn-primary" >Ispiti</button></td>
+                  <td><button (click)="getNastavnici(predmet.id); nastavnikModal.show()" class="btn btn-primary" >Nastavnici</button></td>
+                  <td><button (click)="getStudenti(predmet.id); studentModal.show()" class="btn btn-primary" >Studenti</button></td>
+                  <td><button (click)="editPredmet(predmet); addModal.show();" class="btn btn-primary" >Izmeni</button></td>
+                  <td><button (click)="deletePredmet(predmet.id, predmet.naziv); basicModal.show();" class="btn btn-danger" >Obrisi</button></td>
+                  </tr><tr *ngIf="predmet.showIspiti">
+                      <td colspan="9"><app-ispiti-administracija [predmetId]="predmet.id"></app-ispiti-administracija></td>
+                  </tr>
+                  <tr *ngIf="predmet.showSabloni">
+                      <td colspan="9"><app-predispitne-obaveze-sablon-administracija [predmetId]="predmet.id"></app-predispitne-obaveze-sablon-administracija></td>
+                  </tr>
+           </tbody>
+           <tbody *ngIf="predmeti.length==0">
+              <tr>
+                  <td colspan="9" style="text-align: center">Trenutno nema predmeta...</td>
+              </tr>
+           </tbody>
+    </table>
+    <button class="btn btn-primary" (click)="addPredmet();addModal.show()" >Dodaj predmet</button>
+    </div>
+
+
+    <div class="d-flex justify-content-center">
+          <nav class="my-4 pt-2">
+            <ul class="pagination pagination-circle pg-blue mb-0">
+              <li class="page-item clearfix d-none d-md-block" (click)="changePage(1)" [ngClass]="{disabled: activePage == 1}">
+                <a class="page-link">Prva</a>
+              </li>
+              <li class="page-item" (click)="changePage(activePage-1)" [ngClass]="{disabled: activePage == 1}">
+                <a class="page-link" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Prethodna</span>
+                </a>
+              </li>
+              <li *ngFor="let page of pageCount; let i = index;" class="page-item" [ngClass]="{active: i+1 == activePage, disabled: i+1 == activePage}">
+                <a class="page-link waves-light num" (click)="changePage(i+1)"  mdbWavesEffect>{{i+1}}</a>
+              </li>
+              <li class="page-item" (click)="changePage(activePage+1)" [ngClass]="{disabled: activePage == pageCount.length}">
+                <a class="page-link" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Sledeca</span>
+                </a>
+              </li>
+              <li class="page-item clearfix d-none d-md-block" (click)="changePage(pageCount.length)" [ngClass]="{disabled: activePage == pageCount.length}">
+                <a class="page-link">Poslednja</a>
+              </li>
+
+            </ul>
+          </nav>
+      </div>
+
+      <footer>
+          <div id="footerDiv">
+              <span> Page size: <select class="selectpicker" [(ngModel)]="size" name="size" (change)="changePage(1)">
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+              </select>
+          </span>
+          </div>
+        </footer>
+          <!--/Pagination -->
+      </main>
+
+
+  <div mdbModal #basicModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Obrisi predmet {{deleteName}}?</h4>
+            </div>
+            <div class="modal-body">
+                Da li ste sigurni da zelite da obrisete predmet {{deleteName}}?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
+                <button type="button" (click)="deleteConfirm();basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div mdbModal #addModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="addModal.hide(); form.reset()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title w-100" id="myModalLabel">{{isUpdate? "Izmena predmeta" : "Dodavanje predmeta"}}</h4>
+                </div>
+                <div class="modal-body">
+                    <form #form="ngForm">
+                    <input name="naziv" class="form-control" #naziv="ngModel" minlength="4" type="text" placeholder="Naziv" [(ngModel)]="currentPredmet.naziv">
+                    <div *ngIf="naziv.touched && naziv.value.length<5" style="color: red">Naziv predmeta ne moze biti kraci od 5 slova!</div>
+                    <input name="oznaka" class="form-control" #oznaka="ngModel" type="text" placeholder="Oznaka" [(ngModel)]="currentPredmet.oznaka" (input)="checkOznaka()">
+                    <div *ngIf="oznaka.touched && oznaka.value.length<1" style="color: red">Oznaka ne moze biti prazna</div>
+                    <div *ngIf="oznaka!=undefined && oznaka.value!=null && oznaka.value.length>0 && !valid" style="color: red">Predmet sa tom oznakom vec postoji.</div>
+                    <input name="espb" class="form-control" #espb="ngModel" type="text" placeholder="ESPB" [(ngModel)]="currentPredmet.espb">
+                    <div *ngIf="espb.touched && espb.value.length<1" style="color: red">ESPB ne moze biti prazan</div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide();reset(); form.reset()" mdbWavesEffect>Otkazi</button>
+                    <button type="button" [disabled]="(oznaka.touched && oznaka.value.length<1)|| (espb.touched && espb.value.length<1) || (naziv.touched && naziv.value.length<5) || !valid " (click)="saveConfirm();addModal.hide(); form.reset()" class="btn btn-primary relative waves-light" mdbWavesEffect>Save</button>
+                </div>
+            </div>
+        </div>
+  </div>
+
+  <div mdbModal #nastavnikModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+      <div id="nastavnikModal" class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close pull-right" aria-label="Close" (click)="nastavnikModal.hide()">
+                      <span aria-hidden="true">×</span>
+                  </button>
+                  <h4 class="modal-title w-100" id="myModalLabel"></h4>
+              </div>
+              <div class="modal-body">
+                  <dual-list [key]="key" [filter]="true" [display]="display" [source]="sourceNastavnik" [(destination)]="destinationNastavnik"></dual-list>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="nastavnikModal.hide();reset()" mdbWavesEffect>Otkazi</button>
+                  <button type="button" (click)="saveNastavnici();nastavnikModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Save</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div mdbModal #studentModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+      <div id="studentModal" class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close pull-right" aria-label="Close" (click)="studentModal.hide()">
+                      <span aria-hidden="true">×</span>
+                  </button>
+                  <h4 class="modal-title w-100" id="myModalLabel"></h4>
+              </div>
+              <div class="modal-body">
+                  <dual-list [key]="key" [filter]="true" [display]="display" [source]="sourceStudent" [(destination)]="destinationStudent"></dual-list>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="studentModal.hide();reset()" mdbWavesEffect>Otkazi</button>
+                  <button type="button" (click)="saveStudenti();studentModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Save</button>
+              </div>
+          </div>
+      </div>
+  </div>
+

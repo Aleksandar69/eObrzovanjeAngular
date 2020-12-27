@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { User } from 'src/app/model/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { IspitService } from 'src/app/service/ispit.service';
 import { PredmetService } from 'src/app/service/predmet.service';
@@ -15,7 +16,7 @@ export class PredmetiIspitiListComponent implements OnInit {
   @Input() predmet: any;
   ispiti: any[] = [];
   datePipe = new DatePipe("en-US");
-  user: any;
+  user: User;
 
 
   constructor(private ispitService: IspitService, private authService: AuthenticationService, private userService: UserService) { }
@@ -24,17 +25,26 @@ export class PredmetiIspitiListComponent implements OnInit {
 
     this.user = this.authService.getUserFromLocalCache();
 
-    this.ispitService.getIspitByPredmetIdandNastavnikId(this.predmet.id, this.user.id).subscribe(res => {
-      console.log(this.user.id + "tu je broj samo je debilcina");
+    if (this.user.role == "NASTAVNIK") {
+      this.ispitService.getIspitByPredmetIdandNastavnikId(this.predmet.id, this.user.id).subscribe(res => {
         res.reverse();
         res.forEach(element => {
-        element.datum = this.datePipe.transform(element.datum,"yyyy-MM-dd");
-        element.rokZaPrijavu = this.datePipe.transform(element.rokZaPrijavu,"yyyy-MM-dd");
+          element.datum = this.datePipe.transform(element.datum, "yyyy-MM-dd");
+          element.rokZaPrijavu = this.datePipe.transform(element.rokZaPrijavu, "yyyy-MM-dd");
+        });
+        this.ispiti = res;
       });
-      this.ispiti = res;
-    });
-    console.log( this.user.id + " tu je AAAAAAAAAAAAAAAA");
-
+    }
+    else {
+      this.ispitService.getIspitByPredmetId(this.predmet.id).subscribe(res => {
+        res.reverse();
+        res.forEach(element => {
+          element.datum = this.datePipe.transform(element.datum, "yyyy-MM-dd");
+          element.rokZaPrijavu = this.datePipe.transform(element.rokZaPrijavu, "yyyy-MM-dd");
+        });
+        this.ispiti = res;
+      });
+    }
   }
 
 }

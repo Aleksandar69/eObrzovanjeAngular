@@ -1,0 +1,163 @@
+<main>
+  <h2 style="text-align: center">Administracija studenata</h2>
+      <div class=" col-12 col-lg-12">
+              <form>
+                      <div class="form-group">
+                          <div class="input-group">
+                              <a routerLink="/administracija" id="backLink"><img id ="backBtn" src="../../../assets/back.png"></a>
+                              <input type="text" class="form-control" name="filterIme" placeholder="Unesi ime..." [(ngModel)]="filterIme">
+                              <input type="text" class="form-control" name="filterPrezime" placeholder="Unesi prezime..." [(ngModel)]="filterPrezime">
+                              <img src="../../../assets/searchIcon.png" (click)="getStudents()">
+                          </div>
+                      </div>
+                  </form>
+  <table class="table" style="table-layout: fixed">
+      <!--Table head-->
+      <thead class="blue-grey lighten-4">
+
+        <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>JMBG</th>
+            <th>Address</th>
+            <th>Broj Indexa</th>
+            <th>Tekuci Racun</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <!--Table head-->
+
+    <!--Table body-->
+    <tbody *ngFor='let user of users' class= "col-12 col-lg-12">
+        <tr >
+            <td>{{user.username}}</td>
+            <td>{{user.ime + " " + user.prezime}}</td>
+            <td>{{user.jmbg}}</td>
+            <td>{{user.adresa}}</td>
+            <td>{{user.brojIndexa}}</td>
+            <td>{{user.tekuciRacun}}</td>
+            <td><button (click)="showUplate(user.id)" class="btn btn-primary" >Uplate</button><br><button (click)="showDokumenti(user.id)" class="btn btn-primary" >Dokumenti</button></td>
+            <td><button (click)="editStudent(user); addModal.show();" class="btn btn-primary" >Izmeni</button><br><button (click)="deleteStudent(user.id, user.ime + ' ' + user.prezime); basicModal.show();" class="btn btn-danger" >Obrisi</button></td>
+        </tr>
+        <tr *ngIf="user.showUplate">
+          <td colspan="8"><app-uplate-administracija [userId]="user.id" [racunPrimaoca]="user.tekuciRacun"> </app-uplate-administracija></td>
+      </tr>
+      <tr *ngIf="user.showDokumenti">
+          <td colspan="8"><app-dokument-administracija [userId]="user.id"> </app-dokument-administracija></td>
+      </tr>
+    </tbody>
+    <tbody>
+          <tr *ngIf="users.length==0">
+                  <td colspan="8" style="text-align: center">Trenutno nema studenata...</td>
+          </tr>
+    </tbody>
+    <!--Table body-->
+  </table>
+  <button class="btn btn-primary" (click)="addStudent();addModal.show()" > Dodaj studenta</button>
+  </div>
+
+  <div class="d-flex justify-content-center">
+      <nav class="my-4 pt-2">
+        <ul class="pagination pagination-circle pg-blue mb-0">
+          <li class="page-item clearfix d-none d-md-block" (click)="changePage(1)" [ngClass]="{disabled: activePage == 1}">
+            <a class="page-link">Prva</a>
+          </li>
+          <li class="page-item" (click)="changePage(activePage-1)" [ngClass]="{disabled: activePage == 1}">
+            <a class="page-link" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Prethodna</span>
+            </a>
+          </li>
+          <li *ngFor="let page of pageCount; let i = index;" class="page-item" [ngClass]="{active: i+1 == activePage, disabled: i+1 == activePage}">
+            <a class="page-link waves-light num" (click)="changePage(i+1)" mdbWavesEffect>{{i+1}}</a>
+          </li>
+          <li class="page-item" (click)="changePage(activePage+1)" [ngClass]="{disabled: activePage == pageCount.length}">
+            <a class="page-link" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Sledeca</span>
+            </a>
+          </li>
+          <li class="page-item clearfix d-none d-md-block" (click)="changePage(pageCount.length)" [ngClass]="{disabled: activePage == pageCount.length}">
+            <a class="page-link">Poslednja</a>
+          </li>
+
+        </ul>
+      </nav>
+      <!--/Pagination -->
+    </div>
+    <footer>
+      <div id="footerDiv">
+          <span> Page size: <select class="selectpicker" [(ngModel)]="size" name="size" (change)="changePage(1)">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+          </select>
+      </span>
+      </div>
+    </footer>
+  </main>
+    <!--Bottom Table UI-->
+
+  <div mdbModal #basicModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                      <span aria-hidden="true">×</span>
+                  </button>
+                  <h4 class="modal-title w-100" id="myModalLabel">Obrisi studenta {{deleteName}}?</h4>
+              </div>
+              <div class="modal-body">
+                  Da li ste sigurni da zelite da obrisete {{deleteName}}?
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
+                  <button type="button" (click)="deleteConfirm();basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div mdbModal #addModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close pull-right" aria-label="Close" (click)="addModal.hide(); form.reset()">
+                          <span aria-hidden="true">×</span>
+                      </button>
+                      <h4 class="modal-title w-100" id="myModalLabel">{{isUpdate? "Izmena studenta" : "Dodavanje studenta"}}</h4>
+                  </div>
+                  <div class="modal-body">
+                      <form #form="ngForm">
+                          <input name="username" class="form-control" #username="ngModel" minlength="4" type="text" placeholder="Username" [(ngModel)]="currentUser.username" (input)="checkForUsername()" (change)="checkForUsername()">
+                          <div *ngIf="username.touched && username.value.length<4" style="color: red">Username needs to be at least 4 characters long!</div>
+                          <div *ngIf="username!=undefined && username.value!=null && username.value.length>=4 && !valid" style="color: red">Username is already taken.</div>
+                          <input name="password" [hidden]="isUpdate" class="form-control" #password="ngModel" type="password" placeholder="Password" [(ngModel)]="currentUser.password">
+                          <div *ngIf="password.touched && password.value.length<4" style="color: red">Password needs to be at least 4 characters long!</div>
+                          <input name="passwordRepeat" [hidden]="isUpdate" class="form-control" #passwordRepeatInput="ngModel" type="password" placeholder="Repeat Password" [(ngModel)]="passwordRepeat">
+                          <div *ngIf="passwordRepeatInput.touched && password.touched && passwordRepeatInput.value!=null && password.value!=null && passwordRepeatInput.value!=password.value" style="color: red">Passwords don't match!</div>
+                          <input name="ime" class="form-control" #firstName="ngModel" type="text" placeholder="First name" [(ngModel)]="currentUser.ime">
+                          <div *ngIf="firstName.touched && firstName.value.length<1" style="color: red">First name must not be empty</div>
+                          <input name="prezime" class="form-control" #lastName="ngModel" type="text" placeholder="Last name" [(ngModel)]="currentUser.prezime">
+                          <div *ngIf="lastName.touched && lastName.value.length<1" style="color: red">Last name must not be empty</div>
+                          <input name="jmbg" [hidden]="isUpdate" class="form-control" #jmbg="ngModel" type="text" placeholder="JMBG" [(ngModel)]="currentUser.jmbg">
+                          <div *ngIf="jmbg.touched && jmbg.value.length!=13" style="color: red">JMBG must be exactly 13 characters long!</div>
+                          <input name="adresa" class="form-control" #address="ngModel" type="text" placeholder="Address" [(ngModel)]="currentUser.adresa">
+                          <div *ngIf="address.touched && address.value.length<1" style="color: red">Address must not be empty</div>
+                          <input name="brojIndexa" [hidden]="isUpdate" class="form-control" #indexNumber="ngModel" type="text" placeholder="Broj Indexa" [(ngModel)]="currentUser.brojIndexa">
+                          <div *ngIf="indexNumber.touched && indexNumber.value.length<1" style="color: red">Index number must not be empty</div>
+                          <input name="racun" [hidden]="isUpdate" class="form-control" #accountNumber="ngModel" type="text" placeholder="Tekuci racun" [(ngModel)]="currentUser.tekuciRacun">
+                          <div *ngIf="accountNumber.touched && accountNumber.value.length<1" style="color: red">Account number must not be empty</div>
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide();reset(); form.reset()" mdbWavesEffect>Otkazi</button>
+                      <button *ngIf="!isUpdate" type="button" [disabled]="!username.touched || (address.touched && address.value.length<1)|| (firstName.touched && firstName.value.length<1)|| (lastName.touched && lastName.value.length<1)|| (username.touched && username.value.length<4) || !valid || password.value.length<4 || passwordRepeatInput.value!=password.value" (click)="saveConfirm();addModal.hide();form.reset()" class="btn btn-primary relative waves-light" mdbWavesEffect>Save</button>
+                      <button *ngIf="isUpdate" type="button" [disabled]="username==undefined || username.value==null || username.value.length<4 || !valid || firstName==undefined || firstName.value==null || firstName.value.length<1 || lastName==undefined || lastName.value==null || lastName.value.length<1" (click)="saveConfirm();addModal.hide();form.reset()" class="btn btn-primary relative waves-light" mdbWavesEffect>Save</button>
+                  </div>
+              </div>
+          </div>
+        </div>
+

@@ -3,57 +3,35 @@
   <!--Author box-->
   <div class="author-box">
     <!--Name-->
-    <div id="bigDiv" class="col-12 col-lg-12 row">
+    <div id="bigDiv" class="row">
       <div class="card card-body col-3 col-lg-3">
         <h2 class="card-title">{{ user.ime }} {{ user.prezime }}</h2>
         <img src="../../assets/student.png" />
       </div>
-      <div class="card card-body col-lg-8">
-        <ul class="list-group" id="information">
-          <li>
-            Ime
-            <p>{{ user.ime }}</p>
-          </li>
-          <li>
-            Prezime
-            <p>{{ user.prezime }}</p>
-          </li>
-          <li>
-            Adresa
-            <p>{{ user.adresa }}</p>
-          </li>
-          <li *ngIf="user.role === 'STUDENT'">
-            Broj telefona
-            <p>{{ user.brojTelefona }}</p>
-          </li>
-        </ul>
-          <button
-            id="lozinka"
-            class="btn btn-primary"
-            type="button"
-            (click)="addModal.show()"
-          >
-            Promena lozinke
-          </button>
-          <button
-            *ngIf="user.role === 'STUDENT'"
-            id="brojTelefona"
-            class="btn btn-primary"
-            type="button"
-            (click)="addTelefon.show(); izmenaBroja(user)"
-          >
-            Promena broja
-          </button>
-        </div>
-    </div>
+      <div  class="card card-body col-8 col-lg-8">
 
-    <div
-      *ngIf="
+        <ul class="list-group"  id="information" >
+
+          <li >Ime <p>{{user.ime}}</p></li>
+          <li >Prezime<p>{{user.prezime}}</p></li>
+          <li >Adresa <p>{{user.adresa}}</p></li>
+          <li  *ngIf="user.role === 'STUDENT'">Broj telefona <p>{{user.brojTelefona}}</p></li>
+
+        </ul>
+        <div>
+        <button id="lozinka" class="btn btn-primary" type="button" (click)="addModal.show();" >Promena lozinke</button>
+        <button  *ngIf="user.role === 'STUDENT' "  id="brojTelefona" class="btn btn-primary" type="button" (click)="addTelefon.show(); izmenaBroja(user);" >Promena broja</button>
+        </div>
+
+          </div>
+
+</div>
+
+    <div *ngIf="
         authService.getUserFromLocalCache() != undefined &&
         authService.getUserFromLocalCache() != null &&
         authService.getUserFromLocalCache().role == 'STUDENT'
-      "
-    >
+      ">
       <br />
       <hr />
       <h3 class="h3-responsive text-center">Prijavljeni ispiti</h3>
@@ -92,15 +70,15 @@
               <td>{{ prijava.osvojeniBodoviIspit }}</td>
               <td>{{ prijava.ocena }}</td>
               <td>{{ prijava.ocenjeno ? "DA" : "NE" }}</td>
-              <td><button id="odjavaButton" class="btn btn-danger" [disabled] = "prijava.ocenjeno || !compareDates(prijava.datumPrijave)" (click)='odjavi(prijava.id); deleteModal.show();'>ODJAVA</button></td>
+              <td><button id="odjavaButton" class="btn btn-danger"
+                  [disabled]="prijava.ocenjeno || !compareDates(prijava.datumPrijave)"
+                  (click)='odjavi(prijava.id); deleteModal.show();'>ODJAVA</button></td>
             </tr>
           </tbody>
-          <tbody
-            *ngIf="
+          <tbody *ngIf="
               prijavljeniPredmeti == undefined ||
               prijavljeniPredmeti.length === 0
-            "
-          >
+            ">
             <tr>
               <td style="text-align: center" colspan="10">
                 Trenutno nema prijavljenih ispita...
@@ -229,17 +207,12 @@
             </tr>
           </thead>
 
-          <tbody
-            class="table col-12 col-lg-12"
-            style="table-layout: fixed; width: 100%"
-          >
+          <tbody class="table col-12 col-lg-12" style="table-layout: fixed; width: 100%">
             <tr *ngFor="let dokument of dokumenti">
               <td>{{ dokument.naziv }}</td>
               <td>{{ dokument.datumDokumenta }}</td>
               <td>
-                <a href="{{ dokument.sadrzaj }}"
-                  ><button class="btn btn-primary">PREUZMI</button></a
-                >
+                <a href="{{ dokument.sadrzaj }}"><button class="btn btn-primary">PREUZMI</button></a>
               </td>
             </tr>
           </tbody>
@@ -256,25 +229,12 @@
   </div>
 </main>
 
-<div
-  mdbModal
-  #addModal="mdb-modal"
-  class="modal fade"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myBasicModalLabel"
-  aria-hidden="true"
-  [config]="{ backdrop: false, ignoreBackdropClick: false }"
->
+<div mdbModal #addModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true" [config]="{ backdrop: false, ignoreBackdropClick: false }">
   <div class="modal-dialog" role="document">
     <div class="modal-content col-8 col-lg-8">
       <div class="modal-header">
-        <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          (click)="addModal.hide(); form.reset()"
-        >
+        <button type="button" class="close pull-right" aria-label="Close" (click)="addModal.hide(); form.reset()">
           <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100" id="myModalLabel">Promena lozinke</h4>
@@ -283,73 +243,42 @@
       <form #form="ngForm">
         <div class="form-group form-black label-floating is-empty">
           <label class="control-label">Trenutna lozinka</label>
-          <input
-            type="password"
-            class="form-control"
-            #staraLozinka="ngModel"
-            name="currentPassword"
-            [(ngModel)]="currentPassword"
-          />
+          <input type="password" class="form-control" #staraLozinka="ngModel" name="currentPassword"
+            [(ngModel)]="currentPassword" />
         </div>
         <div class="form-group form-black label-floating is-empty">
           <label class="control-label">Nova lozinka</label>
-          <input
-            type="password"
-            class="form-control"
-            #novaLozinka="ngModel"
-            name="newPassword"
-            [(ngModel)]="newPassword"
-          />
+          <input type="password" class="form-control" #novaLozinka="ngModel" name="newPassword"
+            [(ngModel)]="newPassword" />
         </div>
-        <div
-          *ngIf="novaLozinka.touched && novaLozinka.value.length < 4"
-          style="color: red"
-        >
+        <div *ngIf="novaLozinka.touched && novaLozinka.value.length < 4" style="color: red">
           Password needs to be at least 4 characters long!
         </div>
         <div class="form-group form-black label-floating is-empty">
           <label class="control-label">Ponovi novu lozinku</label>
-          <input
-            type="password"
-            class="form-control"
-            #potvrdiLozinku="ngModel"
-            name="confirmPassword"
-            [(ngModel)]="confirmPassword"
-          />
+          <input type="password" class="form-control" #potvrdiLozinku="ngModel" name="confirmPassword"
+            [(ngModel)]="confirmPassword" />
         </div>
-        <div
-          *ngIf="
+        <div *ngIf="
             novaLozinka.touched &&
             potvrdiLozinku.touched &&
             novaLozinka.value != potvrdiLozinku.value
-          "
-          style="color: red"
-        >
+          " style="color: red">
           Passwords don't match!
         </div>
       </form>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary waves-light"
-          aria-label="Close"
-          (click)="addModal.hide(); form.reset()"
-          mdbWavesEffect
-        >
+        <button type="button" class="btn btn-primary waves-light" aria-label="Close"
+          (click)="addModal.hide(); form.reset()" mdbWavesEffect>
           Otkazi
         </button>
-        <button
-          type="button"
-          [disabled]="
+        <button type="button" [disabled]="
             novaLozinka.value == null ||
             novaLozinka.value == undefined ||
             novaLozinka.value.length < 4 ||
             novaLozinka.value != potvrdiLozinku.value
-          "
-          (click)="changePassword(); addModal.hide(); form.reset()"
-          class="btn bg-red relative waves-light"
-          mdbWavesEffect
-        >
+          " (click)="changePassword(); addModal.hide(); form.reset()" class="btn bg-red relative waves-light"
+          mdbWavesEffect>
           Sacuvaj
         </button>
       </div>
@@ -357,25 +286,12 @@
   </div>
 </div>
 
-<div
-  mdbModal
-  #addTelefon="mdb-modal"
-  class="modal fade"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myBasicModalLabel"
-  aria-hidden="true"
-  [config]="{ backdrop: false, ignoreBackdropClick: false }"
->
+<div mdbModal #addTelefon="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true" [config]="{ backdrop: false, ignoreBackdropClick: false }">
   <div class="modal-dialog" role="document">
     <div class="modal-content col-8 col-lg-8">
       <div class="modal-header">
-        <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          (click)="addTelefon.hide()"
-        >
+        <button type="button" class="close pull-right" aria-label="Close" (click)="addTelefon.hide()">
           <span aria-hidden="true">×</span>
         </button>
         <h4 class="modal-title w-100" id="myModalLabel">
@@ -386,37 +302,21 @@
       <form #form="ngForm">
         <div class="form-group form-black label-floating is-empty">
           <label class="control-label">Broj telefona</label>
-          <input
-            type="text"
-            class="form-control"
-            #brojTelefona="ngModel"
-            name="brojTelefona"
-            [(ngModel)]="user.brojTelefona"
-          />
+          <input type="text" class="form-control" #brojTelefona="ngModel" name="brojTelefona"
+            [(ngModel)]="user.brojTelefona" />
         </div>
         <!-- Switch -->
       </form>
       <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-primary waves-light"
-          aria-label="Close"
-          (click)="addTelefon.hide()"
-          mdbWavesEffect
-        >
+        <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addTelefon.hide()"
+          mdbWavesEffect>
           Otkazi
         </button>
-        <button
-          type="button"
-          [disabled]="
+        <button type="button" [disabled]="
             brojTelefona.value == null ||
             brojTelefona.value == undefined ||
             brojTelefona.value.length < 11
-          "
-          (click)="posaljiIzmenuBroja(); addTelefon.hide()"
-          class="btn bg-red relative waves-light"
-          mdbWavesEffect
-        >
+          " (click)="posaljiIzmenuBroja(); addTelefon.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>
           Sacuvaj
         </button>
       </div>
@@ -425,22 +325,25 @@
 </div>
 
 
-<div mdbModal #deleteModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+<div mdbModal #deleteModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
   <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModal.hide()">
-                  <span aria-hidden="true">×</span>
-              </button>
-              <h4 class="modal-title w-100" id="myModalLabel">Odjavi ispit?</h4>
-          </div>
-          <div class="modal-body">
-              Da li ste sigurni da zelite da odjavite ispit?
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="deleteModal.hide()" mdbWavesEffect>Ne</button>
-              <button type="button" (click)="confirmOdjava();deleteModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
-          </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Odjavi ispit?</h4>
       </div>
+      <div class="modal-body">
+        Da li ste sigurni da zelite da odjavite ispit?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="deleteModal.hide()"
+          mdbWavesEffect>Ne</button>
+        <button type="button" (click)="confirmOdjava();deleteModal.hide()" class="btn bg-red relative waves-light"
+          mdbWavesEffect>Da</button>
+      </div>
+    </div>
   </div>
 </div>
