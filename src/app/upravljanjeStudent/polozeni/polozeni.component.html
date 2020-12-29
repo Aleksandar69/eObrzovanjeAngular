@@ -1,0 +1,28 @@
+<h3 class="h3-responsive text-center">Polozeni ispiti</h3>
+<div class=" col-12 col-lg-12">
+<table class="table" style="table-layout: fixed">
+<!--Table head-->
+<thead class="blue-grey lighten-4">
+<tr>
+<th>Predmet</th>
+<th>ESPB</th>
+<th>Datum Ispita</th>
+<th>Profesor</th>
+<th>Ukupno bodova</th>
+<th>Ocena</th>
+</tr>
+<tbody *ngFor="let prijava of polozeni" value = [polozeni]>
+    <tr>
+            <td>{{prijava.ispit.predmet.naziv}}</td>
+            <td>{{prijava.ispit.predmet.espb}}</td>
+            <td>{{prijava.ispit.datum | date:"yyyy/MM/dd"}}</td>
+            <td>{{prijava.ispit.nastavnik.ime + ' ' + prijava.ispit.nastavnik.prezime}}</td>
+            <td>{{prijava.osvojeniBodoviIspit}}</td>
+            <td>{{prijava.ocena | number:'1.0-0'}}</td>
+          </tr>
+</tbody>
+<tbody *ngIf="polozeni == undefined || polozeni.length === 0">
+    <tr><td style="text-align: center" colspan="6">Trenutno nema polozenih ispita...</td></tr>
+</tbody>
+</table>
+</div>

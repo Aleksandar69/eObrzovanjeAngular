@@ -1,0 +1,48 @@
+<main>
+  <h2 class="h2-responsive text-left">Prijava ispita</h2>
+  <div class=" col-12 col-lg-12">
+     <table class="table" style="table-layout: fixed">
+        <thead class="blue-grey lighten-4">
+           <tr>
+              <th>Predmet</th>
+              <th>ESPB</th>
+              <th>Profesor</th>
+              <th>Datum</th>
+              <th>Rok za prijavu</th>
+              <th></th>
+           </tr>
+        <tbody>
+           <tr *ngFor="let ispit of ispitiZaPrijavu" value = [ispitiZaPrijavu]>
+              <td>{{ispit.predmet.naziv}}</td>
+              <td>{{ispit.predmet.espb}}</td>
+              <td>{{ispit.nastavnik.ime + ' ' + ispit.nastavnik.prezime}}</td>
+              <td>{{ispit.datum | date:"yyyy/MM/dd"}}</td>
+              <td>{{ispit.rokZaPrijavu | date:"yyyy/MM/dd"}}</td>
+              <td><button *ngIf="user.stanje >= 200 "  type="button" class="btn btn-primary waves-light" aria-label="Prijavi" (click)="addModal.show();addPrijava(ispit);" mdbWavesEffect>Prijavi</button></td>
+           </tr>
+           <tr *ngIf="ispitiZaPrijavu.length==0">
+              <td colspan="6" style="text-align: center">Trenutno nema ispita za prijavu.</td>
+           </tr>
+           <tr *ngIf="user.stanje &lt; 200 &&  ispitiZaPrijavu.length>0">
+              <td colspan="6" style="text-align: center">Nemate dovoljno sredstava na računu za prijavu. </td>
+           </tr>
+        </tbody>
+     </table>
+  </div>
+</main>
+<div mdbModal #addModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="addModal.hide()">
+        <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel"> Da li zelis da prijavis ispit?</h4>
+     </div>
+     <div class="modal-footer">
+        <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide()" mdbWavesEffect>Otkazi</button>
+        <button type="button" (click)="saveConfirm();addModal.hide()" class="btn btn-primary relative waves-light" mdbWavesEffect>Da</button>
+     </div>
+  </div>
+</div>
+</div>

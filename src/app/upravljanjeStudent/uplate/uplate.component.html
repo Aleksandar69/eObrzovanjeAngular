@@ -1,0 +1,27 @@
+<h3 class="h3-responsive text-center">Uplate</h3>
+
+<div class=" col-12 col-lg-12">
+  <table class="table" style="table-layout: fixed; border-radius: 10px">
+    <thead class="blue-grey lighten-4">
+      <tr>
+        <th>Datum uplate</th>
+        <th>Iznos uplate</th>
+        <th>Poziv na broj</th>
+        <th>Svrha uplate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let uplata of uplate" value=[uplate]>
+        <td>{{uplata.datumUplate}}</td>
+        <td>{{uplata.iznosUplate}}RSD</td>
+        <td>{{uplata.pozivNaBroj}}</td>
+        <td>{{uplata.svrhaUplate}}</td>
+      </tr>
+    </tbody>
+    <tbody *ngIf="uplate == undefined || uplate.length === 0">
+      <tr>
+        <td style="text-align: center" colspan="4">Trenutno nema evidentiranih uplata...</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

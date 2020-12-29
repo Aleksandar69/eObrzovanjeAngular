@@ -1,0 +1,24 @@
+<h3 class="h3-responsive text-center">Nepolozeni ispiti</h3>
+
+        <div class=" col-12 col-lg-12">
+  <table class="table" style="table-layout: fixed">
+        <!--Table head-->
+        <thead class="blue-grey lighten-4">
+    <tr>
+        <th>Predmet</th>
+        <th>Oznaka</th>
+        <th>ESPB</th>
+
+    </tr>
+    <tbody *ngFor="let ispit of nepolozeni" value = [nepolozeni]>
+            <tr>
+                    <td>{{ispit.naziv}}</td>
+                    <td>{{ispit.oznaka}}</td>
+                    <td>{{ispit.espb}}</td>
+                  </tr>
+    </tbody>
+    <tbody *ngIf="nepolozeni == undefined || nepolozeni.length === 0">
+            <tr><td style="text-align: center" colspan="3">Trenutno nema nepolozenih predmeta...</td></tr>
+        </tbody>
+  </table>
+</div>
