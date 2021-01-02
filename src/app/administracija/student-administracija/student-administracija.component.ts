@@ -23,7 +23,11 @@ export class StudentAdministracijaComponent implements OnInit {
   pageCount = [];
 
   constructor(public userService : UserService) {
-       this.getStudents();
+  }
+
+
+  ngOnInit() {
+    this.getStudents();
   }
 
   getStudents(){
@@ -64,8 +68,6 @@ export class StudentAdministracijaComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
 
   saveConfirm(){
    if (!this.isUpdate){

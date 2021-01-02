@@ -1,0 +1,28 @@
+h1{
+  color: white;
+  font-weight: bold;
+  margin: 0 auto;
+  text-align: center;
+}
+
+img{
+  max-width: 15em;
+  max-height: 15em;
+}
+
+#content{
+  width:100%;
+  text-align: center;
+}
+
+.card.card-body.m-lg-4 {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.waves-light{
+  color:black;
+}
+
+.waves-light:hover{
+  color:white;
+}

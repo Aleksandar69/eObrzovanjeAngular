@@ -115,7 +115,7 @@ export class UserService {
   }
 
   getByUsername(username: String){
-    return this.http.get(`${this.host}/users/user`+ username).pipe(
+    return this.http.get(`${this.host}/users/user/`+ username).pipe(
       map((res:any) => res)
     );
   }

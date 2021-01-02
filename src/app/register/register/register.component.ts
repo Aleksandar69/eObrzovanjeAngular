@@ -3,8 +3,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SnotifyService } from 'ng-snotify';
 import { Subscription } from 'rxjs';
+import { Student } from 'src/app/model/student';
 import { User } from 'src/app/model/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
+import {RegistracijaZahtev} from 'src/app/model/registracijaZahtev'
 
 @Component({
   selector: 'app-register',
@@ -28,14 +30,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
 
-  public onRegister(user: User): void {
+  public onRegister(registracijaZahtev: RegistracijaZahtev): void {
     this.showLoading = true;
+    registracijaZahtev.stanje = 0;
     this.subscriptions.push(
-      this.authenticationService.register(user).subscribe(
-        (response: User) => {
+      this.authenticationService.register(registracijaZahtev).subscribe(
+        (response: RegistracijaZahtev) => {
           this.showLoading = false;
-          this.snotify.success(`A new account was created for ${response.ime}.
-          Please check your email for password to log in.`,
+          this.snotify.success(`Zahtjev za pravljenje novog naloga je poslan za korisnika: ${response.ime}.`,
             {
               timeout: 2000,
               showProgressBar: false,

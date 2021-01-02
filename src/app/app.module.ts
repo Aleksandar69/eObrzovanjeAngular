@@ -28,6 +28,13 @@ import { DokumentAdministracijaComponent } from './administracija/student-admini
 import { UplateAdministracijaComponent } from './administracija/student-administracija/uplate-administracija/uplate-administracija.component';
 import { PredispitneObavezeSablonAdministracijaComponent } from './administracija/predmeti-administracija/predispitne-obaveze-sablon-administracija/predispitne-obaveze-sablon-administracija.component';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
+import { PrijavaComponent } from './prijava/prijava.component';
+import { DokumentiComponent } from './upravljanjeStudent/dokumenti/dokumenti.component';
+import { UplateComponent } from './upravljanjeStudent/uplate/uplate.component';
+import { PolozeniComponent } from './upravljanjeStudent/polozeni/polozeni.component';
+import { NepolozeniComponent } from './upravljanjeStudent/nepolozeni/nepolozeni.component';
+import { PrijaveComponent } from './upravljanjeStudent/prijave/prijave.component';
+import { RegistracijaZahtevAdministracijaComponent } from './administracija/registracija-zahtev-administracija/registracija-zahtev-administracija.component';
 
 
 
@@ -54,6 +61,13 @@ import { AngularDualListBoxModule } from 'angular-dual-listbox';
     StudentAdministracijaComponent,
     DokumentAdministracijaComponent,
     UplateAdministracijaComponent,
+    PrijavaComponent,
+    DokumentiComponent,
+    UplateComponent,
+    PolozeniComponent,
+    NepolozeniComponent,
+    PrijaveComponent,
+    RegistracijaZahtevAdministracijaComponent,
   ],
   imports: [
     BrowserModule,

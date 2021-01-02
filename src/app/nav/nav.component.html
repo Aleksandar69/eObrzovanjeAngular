@@ -1,47 +1,57 @@
 <!--Navbar-->
 <mdb-navbar id="nav" SideClass="navbar navbar-expand-lg navbar-dark indigo" >
 
-    <!-- Navbar brand -->
-    <logo><a class="navbar-brand" >Web servis</a></logo>
+  <!-- Navbar brand -->
+  <logo><a class="navbar-brand" routerLink="profil">Web servis</a></logo>
 
-    <!-- Collapsible content -->
-    <links>
+  <!-- Collapsible content -->
+  <links>
 
-        <!-- Links -->
-        <ul class="navbar-nav mr-auto">
-            <li [routerLinkActive]="['active']" class="nav-item" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null  && authService.getUserFromLocalCache().role == 'NASTAVNIK'">
-                    <a class="nav-link waves-light" routerLink="predmeti" >Predmeti i ispiti</a>
-            </li>
+      <!-- Links -->
+      <ul class="navbar-nav mr-auto">
+          <li [routerLinkActive]="['active']" class="nav-item" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null  && authService.getUserFromLocalCache().role == 'NASTAVNIK'">
+                  <a class="nav-link waves-light" routerLink="predmeti" >Predmeti i ispiti</a>
+          </li>
 
-            <li [routerLinkActive]="['active']" class="nav-item" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null  && authService.getUserFromLocalCache().role == 'STUDENT'">
-                    <a class="nav-link waves-light" routerLink="prijava-ispita" >Prijava ispita</a>
-            </li>
+          <li [routerLinkActive]="['active']" class="nav-item" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null  && authService.getUserFromLocalCache().role == 'STUDENT'">
+                  <a class="nav-link waves-light" routerLink="prijava-ispita" >Prijava ispita</a>
+          </li>
 
-            <li [routerLinkActive]="['active']" class="nav-item">
-                <a class="nav-link waves-light"  routerLink="administracija" mdbWavesEffect *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null  && authService.getUserFromLocalCache().role == 'ADMINISTRATOR'" >Administracija</a>
-            </li>
+          <li [routerLinkActive]="['active']" class="nav-item">
+              <a class="nav-link waves-light"  routerLink="administracija" mdbWavesEffect *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null  && authService.getUserFromLocalCache().role == 'ADMINISTRATOR'" >Administracija</a>
+          </li>
 
-            <li [routerLinkActive]="['active']" class="nav-item">
-                    <a class="nav-link waves-light" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null"  routerLink="profil" mdbWavesEffect>Moj Profil</a>
-                </li>
+          <li [routerLinkActive]="['active']" class="nav-item">
+                  <a class="nav-link waves-light" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null"  routerLink="profil" mdbWavesEffect>Moj Profil</a>
+          </li>
+          <li [routerLinkActive]="['active']" class="nav-item">
+            <a class="nav-link waves-light" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null && authService.getUserFromLocalCache().role == 'ADMINISTRATOR'"  routerLink="regzahtjev" mdbWavesEffect>Zahtjevi Za Registraciju</a>
+          </li>
+
+          <li class="nav-item dropdown" dropdown *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null && authService.getUserFromLocalCache().role === 'STUDENT'">
+            <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+                    <i class="fa fa-user-circle" aria-hidden="true"></i>Upravljaj<span class="caret"></span></a>
+            <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+                <!-- <a class="dropdown-item waves-light" mdbWavesEffect routerLink="prijava"   *ngIf="authService.getUserFromLocalCache() == null || authService.getUserFromLocalCache() == undefined" >Prijava</a> -->
+              <a class="dropdown-item waves-light" mdbWavesEffect  role="button" routerLink="dokumenti">Dokumenti</a>
+              <a class="dropdown-item waves-light" mdbWavesEffect  role="button" routerLink="nepolozeni">Nepolozeni Ispiti</a>
+              <a class="dropdown-item waves-light" mdbWavesEffect  role="button" routerLink="polozeni">Polozeni Ispiti</a>
+              <a class="dropdown-item waves-light" mdbWavesEffect  role="button" routerLink="prijave">Prijaveljni Ispiti</a>
+              <a class="dropdown-item waves-light" mdbWavesEffect  role="button" routerLink="uplate">Uplate</a>
 
 
-        </ul>
-        <!-- Links -->
-        <ul class="navbar-nav modal-right">
-                <li class="nav-item dropdown" dropdown>
-                        <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
-                                <i class="fa fa-user-circle" aria-hidden="true"></i><span class="caret"></span></a>
-                        <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
-                            <a class="dropdown-item waves-light" mdbWavesEffect routerLink="prijava"   *ngIf ="authService.getUserFromLocalCache() == null || authService.getUserFromLocalCache() == undefined" >Prijava</a>
-                        <div *ngIf ="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null">
-                            <a class="dropdown-item waves-light" mdbWavesEffect  role="button" (click)="ngLogout();">Odjava</a>
-                        </div>
-                        </div>
-                    </li>
-        </ul>
-    </links>
-    <!-- Collapsible content -->
+            </div>
+        </li>
+
+      </ul>
+      <!-- Links -->
+      <ul class="navbar-nav modal-right">
+        <li  class="nav-item">
+          <a class="nav-link waves-light" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null" role="button" (click)="ngLogout();" mdbWavesEffect>Log Out</a>
+  </li>
+      </ul>
+  </links>
+  <!-- Collapsible content -->
 
 </mdb-navbar>
 <!--/.Navbar-->

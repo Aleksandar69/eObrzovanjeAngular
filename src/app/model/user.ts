@@ -1,6 +1,6 @@
 export class User {
     public id: string;
-    public ime: string;
+    public _ime: string;
     public prezime: string;
     public username: string;
     public role: string;
@@ -12,7 +12,7 @@ export class User {
 
     constructor() {
       this.id = '';
-      this.ime = '';
+      this._ime = '';
       this.prezime = '';
       this.username = '';
       this.role = '';
@@ -21,6 +21,11 @@ export class User {
       this.adresa = '';
       this.password = '';
       this.brojTelefona = '';
+    }
+
+
+    public get ime(){
+      return this._ime;
     }
 
   }

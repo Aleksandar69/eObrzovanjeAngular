@@ -29,5 +29,9 @@ export class PrijavaService {
   }
 
 
+  addPrijava(prijava){
+    return this.http.post(`${this.host}` + '/prijave/', prijava).pipe(map((res:any) => res)
+    );
+  }
 
 }

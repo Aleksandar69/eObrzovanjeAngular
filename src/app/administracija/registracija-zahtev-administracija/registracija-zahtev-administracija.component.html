@@ -1,0 +1,122 @@
+<main>
+  <h2 style="text-align: center"> Administracija Zahtjeva Za Registraciju</h2>
+
+  <div class="col-12 col-lg-12">
+    <form>
+      <div class="form-group">
+        <div class="input-group">
+          <a routerLink="/administracija" id="backLink"><img id="backBtn" src="../../../assets/back.png"></a>
+          <input type="text" class="form-control" name="filterIme" placeholder="Unesi ime..." [(ngModel)]="filterIme">
+          <input type="text" class="form-control" name="filterPrezime" placeholder="Unesi prezime..."
+            [(ngModel)]="filterPrezime">
+          <img src="../../../assets/searchIcon.png" (click)="getZahtevi()">
+        </div>
+      </div>
+    </form>
+
+    <table class="table" style="table-layout: fixed">
+      <!--Table head-->
+      <thead class="blue-grey lighten-4">
+
+        <tr>
+          <th>Username</th>
+          <th>Name</th>
+          <th>JMBG</th>
+          <th>Address</th>
+          <th>Broj Indexa</th>
+          <th>Tekuci Racun</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <!--Table head-->
+
+      <!--Table body-->
+      <tbody *ngFor='let user of users' class="col-12 col-lg-12">
+        <tr>
+          <td>{{user.username}}</td>
+          <td>{{user.ime + " " + user.prezime}}</td>
+          <td>{{user.jmbg}}</td>
+          <td>{{user.adresa}}</td>
+          <td>{{user.brojIndexa}}</td>
+          <td>{{user.tekuciRacun}}</td>
+          <td><button (click)="onOdobri(user); basicModal.show()" class="btn btn-success">Odobri</button></td>
+          <td><button class="btn btn-danger">Obrisi</button></td>
+
+        </tr>
+      </tbody>
+      <tbody>
+        <tr *ngIf="users.length==0">
+          <td colspan="8" style="text-align: center">Trenutno nema zahtjeva za registraciju...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex justify-content-center">
+    <nav class="my-4 pt-2">
+      <ul class="pagination pagination-circle pg-blue mb-0">
+        <li class="page-item clearfix d-none d-md-block" (click)="changePage(1)" [ngClass]="{disabled: activePage == 1}">
+          <a class="page-link">Prva</a>
+        </li>
+        <li class="page-item" (click)="changePage(activePage-1)" [ngClass]="{disabled: activePage == 1}">
+          <a class="page-link" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Prethodna</span>
+          </a>
+        </li>
+        <li *ngFor="let page of pageCount; let i = index;" class="page-item" [ngClass]="{active: i+1 == activePage, disabled: i+1 == activePage}">
+          <a class="page-link waves-light num" (click)="changePage(i+1)" mdbWavesEffect>{{i+1}}</a>
+        </li>
+        <li class="page-item" (click)="changePage(activePage+1)" [ngClass]="{disabled: activePage == pageCount.length}">
+          <a class="page-link" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Sledeca</span>
+          </a>
+        </li>
+        <li class="page-item clearfix d-none d-md-block" (click)="changePage(pageCount.length)" [ngClass]="{disabled: activePage == pageCount.length}">
+          <a class="page-link">Poslednja</a>
+        </li>
+
+      </ul>
+    </nav>
+    <!--/Pagination -->
+  </div>
+  <footer>
+    <div id="footerDiv">
+        <span> Page size: <select class="selectpicker" [(ngModel)]="size" name="size" (change)="changePage(1)">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+        </select>
+    </span>
+    </div>
+  </footer>
+
+
+</main>
+
+
+<div mdbModal #basicModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
+  aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title w-100" id="myModalLabel">Odobri zahtev {{currentUser.ime}}?</h4>
+      </div>
+      <div class="modal-body">
+        Da li ste sigurni da odobrite zahtev sa username-om {{currentUser.username}} ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger waves-light" aria-label="Close" (click)="basicModal.hide()"
+          mdbWavesEffect>Ne</button>
+        <button type="button" class="btn btn-primary waves-light" (click)="odobriConfirm();basicModal.hide();"
+          mdbWavesEffect>Da</button>
+      </div>
+    </div>
+  </div>
+</div>

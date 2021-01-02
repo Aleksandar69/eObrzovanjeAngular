@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { RegistracijaZahtev } from '../model/registracijaZahtev';
+import { Student } from '../model/student';
 import { User } from '../model/user';
 
 @Injectable({
@@ -21,8 +23,8 @@ export class AuthenticationService {
     return this.http.post<User>(`${this.host}/users/login`, user, { observe: 'response' });
   }
 
-  public register(user: User): Observable<User> {
-    return this.http.post<User>(`${this.host}/users/register`, user);
+  public register(registracijaZahtev: RegistracijaZahtev): Observable<RegistracijaZahtev> {
+    return this.http.post<RegistracijaZahtev>(`${this.host}/users/register`, registracijaZahtev);
   }
 
   public logOut(): void {

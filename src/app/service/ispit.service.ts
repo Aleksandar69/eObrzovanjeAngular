@@ -46,4 +46,9 @@ export class IspitService {
     );
   }
 
+  getIspitiZaPrijavu(id: number){
+    return this.http.get(`${this.host}` + '/studenti/' + id + "/prijava-ispita" ).pipe(map((res:any) => res)
+    );
+  }
+
 }
