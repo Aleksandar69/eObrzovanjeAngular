@@ -19,7 +19,9 @@ export class RegistracijaZahtevAdministracijaComponent implements OnInit {
   currentUser = {id: null, username:"", password:"", ime:"", prezime:"", adresa:"", role:"STUDENT", brojIndexa: "", tekuciRacun: "", jmbg:"", odobren: false};
   userNameOriginal:string;
   odobriName: String;
-
+  deleteIndex;
+  deleteId;
+  deleteName: String;
 
 
   constructor(private registracijaZahtevService: RegistracijaZahtevService, private userService: UserService, ) { }
@@ -76,7 +78,12 @@ export class RegistracijaZahtevAdministracijaComponent implements OnInit {
     }
   );
 
-  this.users.splice(this.currentUser.id, 1);
+   this.users.forEach((user, index) => {
+      if(user.id == this.currentUser.id){
+        this.deleteIndex = index;
+    }
+    this.users.splice(this.deleteIndex, 1);
+  });
 }
 
 
@@ -95,6 +102,23 @@ reset(){
 changePage(page) {
   this.activePage = page;
   this.getZahtevi();
+}
+
+deleteUser(user){
+  this.deleteId = user.id;
+  this.deleteName = user.username;
+}
+
+deleteConfirm(){
+  var deleteIndex: number;
+  this.users.forEach((element, index) => {
+    if (this.deleteId == element.id){
+      deleteIndex = index;
+    }
+  })
+  this.registracijaZahtevService.obrisi(this.deleteId).subscribe();
+
+  this.users.splice(deleteIndex,1);
 }
 
 }

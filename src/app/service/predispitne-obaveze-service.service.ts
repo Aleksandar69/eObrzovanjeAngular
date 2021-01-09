@@ -6,20 +6,33 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class PredispitneObavezeServiceService {
+export class PredispitneObavezeService {
 
   private host = environment.apiUrl;
 
+
   constructor(private http: HttpClient) { }
 
-  getPredispitneObavezeByStudentIdandPredmetId( studentId: number, predmetId: number){
-    return this.http.get(`${this.host}/studenti/` + studentId + '/predispitne-obaveze?predmet='+predmetId).pipe(
+  getSabloniByPredmetId( id: number){
+    return this.http.get(`${this.host}/predmeti/` + id + '/predispitne-obaveze').pipe(
       map((res:any) => res)
     );
   }
 
-  addPredispitnaObaveza(predispitnaObaveza){
-    return this.http.post(`${this.host}/predispitne-obaveze`, predispitnaObaveza).pipe(map((res:any) => res)
-  );
+
+  deleteSablon(id){
+    return this.http.delete(`${this.host}` + '/predispitne-obaveze/' + id).pipe(map((res:any) => res)
+
+    );}
+
+
+  addSablon(sablon){
+    return this.http.post(`${this.host}` + '/predispitne-obaveze', sablon).pipe(map((res:any) => res)
+  );}
+
+  updateSablon(id,sablon){
+    return this.http.put(`${this.host}` + '/predispitne-obaveze/'+id, sablon).pipe(map((res:any) => res)
+
+    );}
   }
-}
+

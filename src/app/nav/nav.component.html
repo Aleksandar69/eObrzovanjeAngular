@@ -25,7 +25,7 @@
                   <a class="nav-link waves-light" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null"  routerLink="profil" mdbWavesEffect>Moj Profil</a>
           </li>
           <li [routerLinkActive]="['active']" class="nav-item">
-            <a class="nav-link waves-light" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null && authService.getUserFromLocalCache().role == 'ADMINISTRATOR'"  routerLink="regzahtjev" mdbWavesEffect>Zahtjevi Za Registraciju</a>
+            <a class="nav-link waves-light" *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null && authService.getUserFromLocalCache().role == 'ADMINISTRATOR'"  routerLink="regzahtjev" mdbWavesEffect>Zahtevi Za Registraciju</a>
           </li>
 
           <li class="nav-item dropdown" dropdown *ngIf="authService.getUserFromLocalCache() != undefined && authService.getUserFromLocalCache() != null && authService.getUserFromLocalCache().role === 'STUDENT'">

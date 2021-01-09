@@ -19,7 +19,7 @@
            <td>{{predispitnaObaveza.osvojeniBodovi + "/" + predispitnaObaveza.sablon.ukupnoBodova}}</td>
            <td>{{predispitnaObaveza.polozio? 'DA': 'NE'}}</td>
            <td>{{predispitnaObaveza.datum}}</td>
-           <td><button (click)="addPredispitnaObaveza(predispitnaObaveza.sablon.id); addModal.show()" class="btn alert-primary" >NOVO</button></td>
+           <td><button (click)="addPredispitnaObaveza(predispitnaObaveza.sablon.id); addModal.show()" class="btn alert-primary" >OCENI</button></td>
        </tr>
        <!-- <tr *ngIf="showPredispitne"><td colspan="3" style="padding:0"><app-predmeti-studenti-predispitne-obaveze [student]="student" [predmet]="predmet" class="card card-body" style="background: rgb(230, 230, 230);"></app-predmeti-studenti-predispitne-obaveze></td></tr> -->
        </tbody>

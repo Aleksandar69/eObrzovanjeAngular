@@ -33,4 +33,9 @@ export class RegistracijaZahtevService {
     return this.http.put(`${this.host}/registracija-zahtev` +'/'+id, user).pipe(map((res:any) => res)
     );
   }
+
+  obrisi(id){
+    return this.http.delete(`${this.host}/registracija-zahtev/` + id ).pipe(map((res:any) => res)
+    );
+  }
 }

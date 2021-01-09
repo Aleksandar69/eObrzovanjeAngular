@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PredispitneObavezeSablonServiceService } from 'src/app/service/predispitne-obaveze-sablon-service.service';
+import { PredispitneObavezeService } from 'src/app/service/predispitne-obaveze-service.service';
 import { PredmetService } from 'src/app/service/predmet.service';
 
 @Component({
-  selector: 'app-predispitne-obaveze-sablon-administracija',
-  templateUrl: './predispitne-obaveze-sablon-administracija.component.html',
-  styleUrls: ['./predispitne-obaveze-sablon-administracija.component.css']
+  selector: 'app-predispitne-obaveze-administracija',
+  templateUrl: './predispitne-obaveze-administracija.component.html',
+  styleUrls: ['./predispitne-obaveze-administracija.component.css']
 })
-export class PredispitneObavezeSablonAdministracijaComponent implements OnInit {
+export class PredispitneObavezeAdministracijaComponent implements OnInit {
 
 
   @Input() predmetId:any;
@@ -17,7 +17,7 @@ export class PredispitneObavezeSablonAdministracijaComponent implements OnInit {
   deleteName:string;
   isUpdate: boolean;
 
-  constructor(public sablonService: PredispitneObavezeSablonServiceService, public predmetService: PredmetService) {
+  constructor(public sablonService: PredispitneObavezeService, public predmetService: PredmetService) {
   }
 
   ngOnInit() {
@@ -32,13 +32,17 @@ export class PredispitneObavezeSablonAdministracijaComponent implements OnInit {
 
   deleteConfirm(){
     var deleteIndex: number;
-    this.sablonService.deleteSablon(this.deleteId).subscribe();
-      this.sabloni.forEach((element, index) => {
-        if (this.deleteId == element.id){
-          deleteIndex = index;
-        }
-        this.sabloni.splice(deleteIndex,1);
-      })
+    this.sabloni.forEach((element, index) => {
+      console.log("element" + element.naziv + " index:" + index);
+      if (this.deleteId == element.id){
+        deleteIndex = index;
+      }
+    })
+    this.sablonService.deleteSablon(this.deleteId).subscribe(
+    );
+    this.sabloni.splice(deleteIndex,1);
+
+
   }
 
   saveConfirm(){

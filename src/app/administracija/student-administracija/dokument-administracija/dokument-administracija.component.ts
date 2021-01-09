@@ -138,4 +138,6 @@ export class DokumentAdministracijaComponent implements OnInit {
     this.isDocLocked = false;
   }
 
+
+
 }

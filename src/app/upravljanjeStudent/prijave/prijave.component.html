@@ -27,7 +27,7 @@
                     <td>{{prijava.osvojeniBodoviIspit}}</td>
                     <td>{{prijava.ocena}}</td>
                     <td>{{prijava.ocenjeno? "DA" : "NE"}}</td>
-                    <td><button id="odjavaButton" class="btn btn-danger" [disabled]="prijava.ocenjeno || !compareDates(prijava.datumPrijave)" (click)='odjavi(prijava.id); deleteModal.show();'>ODJAVA</button></td>
+                    <td><button id="odjavaButton" class="btn btn-danger" [disabled]="prijava.ocenjeno || compareDates(prijava.datumPrijave)" (click)='odjavi(prijava.id); deleteModal.show();'>ODJAVA</button></td>
                 </tr>
             </tbody>
             <tbody *ngIf="prijavljeniPredmeti == undefined || prijavljeniPredmeti.length === 0">

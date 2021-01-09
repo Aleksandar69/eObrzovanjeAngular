@@ -9,6 +9,7 @@ export class User {
     public adresa: string;
     private password: string;
     public brojTelefona: string;
+    public profileImageUrl: string;
 
     constructor() {
       this.id = '';
@@ -21,6 +22,7 @@ export class User {
       this.adresa = '';
       this.password = '';
       this.brojTelefona = '';
+      this.profileImageUrl = '';
     }
 
 

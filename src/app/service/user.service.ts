@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { User } from '../model/user';
@@ -17,6 +17,8 @@ export class UserService {
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.host}/users`);
   }
+
+
 
   public addUser(formData: FormData): Observable<User> {
     return this.http.post<User>(`${this.host}/users/add`, formData);
@@ -146,5 +148,17 @@ export class UserService {
    );
   }
 
+  updatePassword(oldPass, newPass, usern){
+    var body = {oldPassword:oldPass,newPassword:newPass, username: usern};
+    return this.http.put(`${this.host}` + '/users/password', body).pipe(map((res:any) => res)
+    );
+  }
+
+  public updateProfileImage(formData: FormData): Observable<HttpEvent<User>> {
+    return this.http.post<User>(`${this.host}/users/updateProfileImage`, formData,
+    {reportProgress: true,
+      observe: 'events'
+    });
+  }
 
 }

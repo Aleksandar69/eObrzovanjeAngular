@@ -46,7 +46,6 @@ export class PredmetiAdministracijaComponent implements OnInit {
         this.pageCount.push(0);
       }
     });
-
 }
 
 

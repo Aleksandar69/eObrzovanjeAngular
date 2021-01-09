@@ -15,7 +15,6 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { PredmetiIspitiListComponent } from './predmeti/predmeti-ispiti-list/predmeti-ispiti-list.component';
 import { PredmetiIspitiPrijaveComponent } from './predmeti/predmeti-ispiti-prijave/predmeti-ispiti-prijave.component';
 import { PredmetiStudentiListComponent } from './predmeti/predmeti-studenti-list/predmeti-studenti-list.component';
-import { PredmetiStudentiPredispitneObavezeComponent } from './predmeti/predmeti-studenti-predispitne-obaveze/predmeti-studenti-predispitne-obaveze.component';
 import { PredmetiItemComponent } from './predmeti/predmeti-item/predmeti-item.component';
 import { PredmetiListComponent } from './predmeti/predmeti-list/predmeti-list.component';
 import { NavComponent } from './nav/nav.component';
@@ -26,7 +25,6 @@ import { IspitiAdministracijaComponent } from './administracija/predmeti-adminis
 import { StudentAdministracijaComponent } from './administracija/student-administracija/student-administracija.component';
 import { DokumentAdministracijaComponent } from './administracija/student-administracija/dokument-administracija/dokument-administracija.component';
 import { UplateAdministracijaComponent } from './administracija/student-administracija/uplate-administracija/uplate-administracija.component';
-import { PredispitneObavezeSablonAdministracijaComponent } from './administracija/predmeti-administracija/predispitne-obaveze-sablon-administracija/predispitne-obaveze-sablon-administracija.component';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
 import { PrijavaComponent } from './prijava/prijava.component';
 import { DokumentiComponent } from './upravljanjeStudent/dokumenti/dokumenti.component';
@@ -35,7 +33,8 @@ import { PolozeniComponent } from './upravljanjeStudent/polozeni/polozeni.compon
 import { NepolozeniComponent } from './upravljanjeStudent/nepolozeni/nepolozeni.component';
 import { PrijaveComponent } from './upravljanjeStudent/prijave/prijave.component';
 import { RegistracijaZahtevAdministracijaComponent } from './administracija/registracija-zahtev-administracija/registracija-zahtev-administracija.component';
-
+import { PredmetiStudentiPredispitneObavezePolaganjeComponent } from './predmeti/predmeti-studenti-predispitne-obaveze-polaganje/predmeti-studenti-predispitne-obaveze-polaganje.component';
+import { PredispitneObavezeAdministracijaComponent } from './administracija/predmeti-administracija/predispitne-obaveze-administracija/predispitne-obaveze-administracija.component';
 
 
 
@@ -49,13 +48,13 @@ import { RegistracijaZahtevAdministracijaComponent } from './administracija/regi
     PredmetiIspitiListComponent,
     PredmetiIspitiPrijaveComponent,
     PredmetiStudentiListComponent,
-    PredmetiStudentiPredispitneObavezeComponent,
+    PredmetiStudentiPredispitneObavezePolaganjeComponent,
     PredmetiItemComponent,
     PredmetiListComponent,
     NavComponent,
     AdministracijaComponent,
     PredmetiAdministracijaComponent,
-    PredispitneObavezeSablonAdministracijaComponent,
+    PredispitneObavezeAdministracijaComponent,
     ProfesorAdministracijaComponent,
     IspitiAdministracijaComponent,
     StudentAdministracijaComponent,

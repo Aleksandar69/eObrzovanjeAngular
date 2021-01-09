@@ -15,7 +15,7 @@
            <td>{{student.ime + ' ' + student.prezime}}</td>
            <td><button (click)="student.showPredispitne = !student.showPredispitne" class="btn alert-primary" >Predispitne Obaveze</button></td>
        </tr>
-       <tr *ngIf="student.showPredispitne"><td colspan="3" style="padding:0"><app-predmeti-studenti-predispitne-obaveze [student]="student" [predmet]="predmet" class="card card-body" style="background: rgb(230, 230, 230);"></app-predmeti-studenti-predispitne-obaveze></td></tr>
+       <tr *ngIf="student.showPredispitne"><td colspan="3" style="padding:0"><app-predmeti-studenti-predispitne-obaveze-polaganje [student]="student" [predmet]="predmet" class="card card-body" style="background: rgb(230, 230, 230);"></app-predmeti-studenti-predispitne-obaveze-polaganje></td></tr>
     </tbody>
     <tbody *ngIf="studenti.length==0">
         <tr><td colspan="3" style="text-align: center">Trenutno nema studenata na predmetu...</td></tr>

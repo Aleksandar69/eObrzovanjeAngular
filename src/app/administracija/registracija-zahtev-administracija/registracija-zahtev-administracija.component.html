@@ -41,7 +41,7 @@
           <td>{{user.brojIndexa}}</td>
           <td>{{user.tekuciRacun}}</td>
           <td><button (click)="onOdobri(user); basicModal.show()" class="btn btn-success">Odobri</button></td>
-          <td><button class="btn btn-danger">Obrisi</button></td>
+          <td><button class="btn btn-danger" (click)="deleteUser(user); deleteModal.show()">Obrisi</button></td>
 
         </tr>
       </tbody>
@@ -109,7 +109,7 @@
         <h4 class="modal-title w-100" id="myModalLabel">Odobri zahtev {{currentUser.ime}}?</h4>
       </div>
       <div class="modal-body">
-        Da li ste sigurni da odobrite zahtev sa username-om {{currentUser.username}} ?
+        Da li ste sigurni da odobrite zahtev username: {{currentUser.username}} ?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger waves-light" aria-label="Close" (click)="basicModal.hide()"
@@ -120,3 +120,24 @@
     </div>
   </div>
 </div>
+
+
+<div mdbModal #deleteModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myDeleteModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: false}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModal.hide()">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title w-100" id="myModalLabel">Da li zelite da obrisete zahtev?</h4>
+        </div>
+        <div class="modal-body">
+            Da li ste sigurni da zelite da obrisete zahtev username: "{{deleteName}}"?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="deleteModal.hide()" mdbWavesEffect>Ne</button>
+            <button type="button" (click)="deleteConfirm(); deleteModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+        </div>
+    </div>
+  </div>
+  </div>

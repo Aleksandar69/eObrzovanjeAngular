@@ -39,14 +39,14 @@ export class PredmetiIspitiPrijaveComponent implements OnInit {
   }
 
   save(){
-    // this.prijavaService.updatePrijava(this.currentPrijava.id, this.currentPrijava).subscribe(res => {
-    //   res.datumPrijave = this.datePipe.transform(res.datumPrijave,"yyyy-MM-dd hh:mm:ss");
-    //   for (let i =0; i<this.prijave.length; i++){
-    //     if (this.prijave[i].id == res.id){
-    //       this.prijave[i] = res;
-    //   }
-    // }
-    // })
+    this.prijavaService.updatePrijava(this.currentPrijava.id, this.currentPrijava).subscribe(res => {
+      res.datumPrijave = this.datePipe.transform(res.datumPrijave,"yyyy-MM-dd hh:mm:ss");
+      for (let i =0; i<this.prijave.length; i++){
+        if (this.prijave[i].id == res.id){
+          this.prijave[i] = res;
+      }
+    }
+    })
   }
 
 }

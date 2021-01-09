@@ -34,4 +34,14 @@ export class PrijavaService {
     );
   }
 
+  updatePrijava(id, prijava){
+    return this.http.put(`${this.host}` + '/prijave/'+id, prijava).pipe(map((res:any) => res)
+    );
+  }
+
+  deletePrijava(id){
+    return this.http.delete(`${this.host}/prijave/` + id).pipe(map((res:any) => res)
+    );
+  }
+
 }

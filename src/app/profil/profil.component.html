@@ -6,7 +6,21 @@
     <div id="bigDiv" class="row">
       <div class="card card-body col-3 col-lg-3">
         <h2 class="card-title">{{ user.ime }} {{ user.prezime }}</h2>
-        <img src="../../assets/student.png" />
+        <!-- <img src="../../assets/student.png" /> -->
+        <div class="mx-auto" style="width: 120px;">
+          <div class="d-flex justify-content-center align-items-center rounded">
+            <img class="rounded" height="200" width="200" src="{{user?.profileImageUrl}}" alt="">
+          </div>
+          <div *ngIf="fileStatus?.status==='progress'" class="progress mt-1">
+            <div class="progress-bar bg-info" role="progressbar"
+              [style.width.%]="fileStatus?.percentage" aria-valuenow="0" aria-valuemin="0"
+              aria-valuemax="100">{{fileStatus?.percentage}}%</div>
+          </div>
+        </div>
+        <button (click)="updateProfileImage()" class="btn btn-primary" type="button">
+          <i class="fa fa-fw fa-camera"></i>
+          <span>Change Photo</span>
+        </button>
       </div>
       <div  class="card card-body col-8 col-lg-8">
 
@@ -26,6 +40,8 @@
           </div>
 
 </div>
+
+
 
     <div *ngIf="
         authService.getUserFromLocalCache() != undefined &&
@@ -71,7 +87,8 @@
               <td>{{ prijava.ocena }}</td>
               <td>{{ prijava.ocenjeno ? "DA" : "NE" }}</td>
               <td><button id="odjavaButton" class="btn btn-danger"
-                  [disabled]="prijava.ocenjeno || !compareDates(prijava.datumPrijave)"
+                  [disabled]="prijava.ocenjeno || compareDates(prijava.datumPrijave) "
+
                   (click)='odjavi(prijava.id); deleteModal.show();'>ODJAVA</button></td>
             </tr>
           </tbody>
@@ -346,4 +363,23 @@
       </div>
     </div>
   </div>
+
+  <!-- <div class="custom-file">
+    <input type="file" accept="image/*" name="profileImage"
+    (change)="onProfileImageChange($event.target.files[0].name, $event.target.files[0])"
+      class="custom-file-input">
+    <label class="custom-file-label"><span [hidden]="!fileName">{{ fileName }}</span>
+      <span [hidden]="fileName">Choose File</span>
+    </label>
+  </div> -->
+
+
+
+  <form enctype="multipart/form-data" style="display:none;">
+    <input type="file"
+      (change)="onProfileImageChange($event.target.files[0].name, $event.target.files[0]); onUpdateProfileImage()"
+     name="profile-image-input" id="profile-image-input" placeholder="file" accept="image/*" />
+  </form>
+
 </div>
+

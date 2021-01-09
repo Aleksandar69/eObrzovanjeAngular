@@ -35,13 +35,13 @@
             <td>{{user.jmbg}}</td>
             <td>{{user.adresa}}</td>
 
-            <td><button (click)="editProfessor(user.id, user); addModal.show();" class="btn btn-primary" >Izmeni</button></td>
+            <td><button (click)="isUpdate=true; editProfessor(user.id, user); addModal.show();" class="btn btn-primary" >Izmeni</button></td>
             <td><button (click)="deleteProfessor(user.id, user.ime + ' ' + user.prezime); basicModal.show();" class="btn btn-danger" >Obrisi</button></td>
         </tr>
         <tr *ngIf="users.length==0">
             <td colspan="7" style="text-align: center">Trenutno nema nastavnika...</td>
         </tr>
-        <button class="btn btn-primary" (click)="addNastavnik();addModal.show()" >Dodaj nastavnika</button>
+        <button class="btn btn-primary" (click)="addNastavnik();isUpdate=false;addModal.show();" >Dodaj nastavnika</button>
     </tbody>
     <!--Table body-->
   </table>

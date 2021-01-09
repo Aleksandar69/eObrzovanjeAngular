@@ -1,26 +1,27 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { PredispitneObavezeSablonServiceService } from 'src/app/service/predispitne-obaveze-sablon-service.service';
-import { PredispitneObavezeServiceService } from 'src/app/service/predispitne-obaveze-service.service';
+import { PredispitneObavezeService } from 'src/app/service/predispitne-obaveze-service.service';
+import { PredispitneObavezePolaganjeServiceService } from 'src/app/service/predispitne-obaveze-polaganje-service.service';
 
 @Component({
-  selector: 'app-predmeti-studenti-predispitne-obaveze',
-  templateUrl: './predmeti-studenti-predispitne-obaveze.component.html',
-  styleUrls: ['./predmeti-studenti-predispitne-obaveze.component.css']
+  selector: 'app-predmeti-studenti-predispitne-obaveze-polaganje',
+  templateUrl: './predmeti-studenti-predispitne-obaveze-polaganje.component.html',
+  styleUrls: ['./predmeti-studenti-predispitne-obaveze-polaganje.component.css']
 })
-export class PredmetiStudentiPredispitneObavezeComponent implements OnInit {
+export class PredmetiStudentiPredispitneObavezePolaganjeComponent implements OnInit {
 
   @Input() student: any;
   @Input() predmet: any;
-  currentPredispitnaObaveza = {osvojeniBodovi:" ", student: "" , sablon:""};
+  currentPredispitnaObaveza = {osvojeniBodovi:" ", student: "" , sablon:"", predmet: ""};
   predmetPredispitneObaveze: any[];
   studentPredispitneObaveze: any[];
   datePipe = new DatePipe("en-US");
 
-  constructor(public sablonService: PredispitneObavezeSablonServiceService, public predispitneObavezeService: PredispitneObavezeServiceService) { }
+  constructor(public sablonService: PredispitneObavezeService, public predispitneObavezeService: PredispitneObavezePolaganjeServiceService) { }
 
   ngOnInit(): void {
     this.currentPredispitnaObaveza.student = this.student.id;
+    this.currentPredispitnaObaveza.predmet = this.predmet.id;
     this.sablonService.getSabloniByPredmetId(this.predmet.id).subscribe(resPredmet => {
       this.predispitneObavezeService.getPredispitneObavezeByStudentIdandPredmetId(this.student.id, this.predmet.id).subscribe(resStudent => {
         this.studentPredispitneObaveze= resStudent;
