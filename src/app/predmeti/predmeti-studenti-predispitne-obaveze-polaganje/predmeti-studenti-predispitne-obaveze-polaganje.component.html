@@ -19,7 +19,7 @@
            <td>{{predispitnaObaveza.osvojeniBodovi + "/" + predispitnaObaveza.sablon.ukupnoBodova}}</td>
            <td>{{predispitnaObaveza.polozio? 'DA': 'NE'}}</td>
            <td>{{predispitnaObaveza.datum}}</td>
-           <td><button (click)="addPredispitnaObaveza(predispitnaObaveza.sablon.id); addModal.show()" class="btn alert-primary" >OCENI</button></td>
+           <td><button (click)="addPredispitnaObaveza(predispitnaObaveza.sablon.id); addModal.show()" class="btn btn-primary" >Oceni</button></td>
        </tr>
        <!-- <tr *ngIf="showPredispitne"><td colspan="3" style="padding:0"><app-predmeti-studenti-predispitne-obaveze [student]="student" [predmet]="predmet" class="card card-body" style="background: rgb(230, 230, 230);"></app-predmeti-studenti-predispitne-obaveze></td></tr> -->
        </tbody>
@@ -42,8 +42,8 @@
                   <div *ngIf="osvojeniBodovi.touched && osvojeniBodovi.value<0" style="color: red"> Broj osvojenih bodova ne sme biti manje od 0</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide(); reset();" mdbWavesEffect>Otkazi</button>
-                    <button type="button" [disabled]="osvojeniBodovi.value<0" (click)="save();addModal.hide();" class="btn bg-red relative waves-light" mdbWavesEffect>Sacuvaj</button>
+                    <button type="button"  class="btn bg-red relative waves-light" aria-label="Close" (click)="addModal.hide(); reset();" mdbWavesEffect>Otkazi</button>
+                    <button type="button" class="btn btn-primary waves-light" [disabled]="osvojeniBodovi.value<0" (click)="save();addModal.hide();"  mdbWavesEffect>Sacuvaj</button>
                 </div>
             </div>
         </div>

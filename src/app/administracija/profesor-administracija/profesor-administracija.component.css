@@ -1,0 +1,39 @@
+
+
+#dodajbtn{
+  background-color: rgb(48,63,159);
+  border-color:  rgb(48,63,159);
+  color:white
+}
+
+#dodajbtn:hover{
+  background-color: #182052;
+}
+
+#izmeniDugme:hover{
+  background-color: #77976c;
+}
+#izmeniDugme{
+  background-color: #B8EDA6;
+  border-color:#B8EDA6;
+}
+
+.pagination > li > a
+{
+  background-color: #5783ad;
+  color:white;
+}
+
+.page-item.disabled > a{
+  background-color: #a0cffa !important;
+}
+
+.pagination > li > a
+{
+  background-color: #5783ad;
+  color:white;
+}
+
+.page-item.disabled > a{
+  background-color: #a0cffa !important;
+}

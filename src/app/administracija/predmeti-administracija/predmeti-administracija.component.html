@@ -1,12 +1,18 @@
 <main>
-  <h2 style="text-align: center">Administracija predmeta</h2>
-  <div class=" col-12 col-lg-12">
-      <form>
-              <div class="form-group">
-                  <div class="input-group">
-                      <a routerLink="/administracija" id="backLink"><img id ="backBtn" src="../../../assets/back.png"></a>
-                      <input type="text" class="form-control" name="filterIme" placeholder="Unesi naziv..." [(ngModel)]="filterNaziv">
-                      <img src="../../../assets/searchIcon.png" (click)="getPredmeti()">
+  <div class="row" style="text-align: center;">
+    <div class="col-lg-2">
+      <a routerLink="/administracija" id="backLink"><fa-icon id="back" [icon]="faArrowCircleLeft"></fa-icon></a>
+    </div>
+  </div>
+  <div class="col-lg-12">
+    <h2 style="text-align: center">Administracija Predmeta</h2>
+  </div>
+  <div class=" col-12 col-lg-12 ">
+      <form >
+              <div class="form-group ">
+                  <div class="input-group ">
+                      <input type="text" style="margin-right;" class="form-control align-self-center"  name="filterIme" placeholder="Unesi naziv..." [(ngModel)]="filterNaziv">
+                      <a><fa-icon id="lupa" [icon]="faSearch" (click)="getPredmeti()"></fa-icon> </a>
                   </div>
               </div>
           </form>
@@ -34,9 +40,10 @@
                   <td><button (click)="showSabloni(predmet.id);" class="btn btn-primary predispitneBtn" style="font-size: 0.75em; padding: 0.5em;">Predispitne obaveze</button></td>
                   <td><button (click)="showIspiti(predmet.id);" class="btn btn-primary" >Ispiti</button></td>
                   <td><button (click)="getNastavnici(predmet.id); nastavnikModal.show()" class="btn btn-primary" >Nastavnici</button></td>
-                  <td><button (click)="getStudenti(predmet.id); studentModal.show()" class="btn btn-primary" >Studenti</button></td>
-                  <td><button (click)="editPredmet(predmet); addModal.show();" class="btn btn-primary" >Izmeni</button></td>
-                  <td><button (click)="deletePredmet(predmet.id, predmet.naziv); basicModal.show();" class="btn btn-danger" >Obrisi</button></td>
+                  <td><button (click)="getStudenti(predmet.id); studentModal.show()"  class="btn btn-primary" >Studenti</button></td>
+                  <td></td>
+                  <td><button (click)="editPredmet(predmet); addModal.show();" id="izmeniDugme" class="btn btn-primary" >Izmeni</button>
+                  <button (click)="deletePredmet(predmet.id, predmet.naziv); basicModal.show();" class="btn btn-danger" >Obrisi</button></td>
                   </tr><tr *ngIf="predmet.showIspiti">
                       <td colspan="9"><app-ispiti-administracija [predmetId]="predmet.id"></app-ispiti-administracija></td>
                   </tr>
@@ -50,7 +57,7 @@
               </tr>
            </tbody>
     </table>
-    <button class="btn btn-primary" (click)="addPredmet();addModal.show()" >Dodaj predmet</button>
+    <button class="btn btn-primary"  id="dodajDugme" (click)="addPredmet();addModal.show()" id="dodajbtn" >Dodaj predmet</button>
     </div>
 
 
@@ -111,8 +118,8 @@
                 Da li ste sigurni da zelite da obrisete predmet {{deleteName}}?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
-                <button type="button" (click)="deleteConfirm();basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+                <button type="button"   class="btn bg-red relative waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
+                <button type="button" class="btn btn-primary waves-light" (click)="deleteConfirm();basicModal.hide()" mdbWavesEffect>Da</button>
             </div>
         </div>
     </div>
@@ -134,13 +141,13 @@
                     <input name="oznaka" class="form-control" #oznaka="ngModel" type="text" placeholder="Oznaka" [(ngModel)]="currentPredmet.oznaka" (input)="checkOznaka()">
                     <div *ngIf="oznaka.touched && oznaka.value.length<1" style="color: red">Oznaka ne moze biti prazna</div>
                     <div *ngIf="oznaka!=undefined && oznaka.value!=null && oznaka.value.length>0 && !valid" style="color: red">Predmet sa tom oznakom vec postoji.</div>
-                    <input name="espb" class="form-control" #espb="ngModel" type="text" placeholder="ESPB" [(ngModel)]="currentPredmet.espb">
-                    <div *ngIf="espb.touched && espb.value.length<1" style="color: red">ESPB ne moze biti prazan</div>
+                    <input pattern="^\d+" name="espb" class="form-control" #espb="ngModel" type="text" placeholder="ESPB" [(ngModel)]="currentPredmet.espb">
+                    <div class="help-block" *ngIf="(isLetter(espb.value) && espb.touched) ||( espb.touched && espb.invalid) || (espb.touched && espb.value.length<1)" style="color:red;">ESPB mora sadrzati samo brojeve i ne sme biti prazan</div>
                   </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide();reset(); form.reset()" mdbWavesEffect>Otkazi</button>
-                    <button type="button" [disabled]="(oznaka.touched && oznaka.value.length<1)|| (espb.touched && espb.value.length<1) || (naziv.touched && naziv.value.length<5) || !valid " (click)="saveConfirm();addModal.hide(); form.reset()" class="btn btn-primary relative waves-light" mdbWavesEffect>Save</button>
+                <div class="modal-footer" >
+                    <button type="button"  class="btn bg-red relative waves-light" aria-label="Close" (click)="addModal.hide();reset(); form.reset()" mdbWavesEffect>Otkazi</button>
+                    <button type="button" class="btn btn-primary waves-light" [disabled]="form.invalid ||(oznaka.touched && oznaka.value.length<1)|| (espb.touched && espb.value.length<1) || (naziv.touched && naziv.value.length<5) || !valid " (click)="saveConfirm();addModal.hide(); form.reset()"  mdbWavesEffect>Save</button>
                 </div>
             </div>
         </div>
@@ -159,8 +166,8 @@
                   <dual-list [key]="key" [filter]="true" [display]="display" [source]="sourceNastavnik" [(destination)]="destinationNastavnik"></dual-list>
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="nastavnikModal.hide();reset()" mdbWavesEffect>Otkazi</button>
-                  <button type="button" (click)="saveNastavnici();nastavnikModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Save</button>
+                  <button type="button"  class="btn bg-red relative waves-light" aria-label="Close" (click)="nastavnikModal.hide();reset()" mdbWavesEffect>Otkazi</button>
+                  <button type="button" class="btn btn-primary waves-light" (click)="saveNastavnici();nastavnikModal.hide()"  mdbWavesEffect>Save</button>
               </div>
           </div>
       </div>
@@ -179,8 +186,8 @@
                   <dual-list [key]="key" [filter]="true" [display]="display" [source]="sourceStudent" [(destination)]="destinationStudent"></dual-list>
               </div>
               <div class="modal-footer">
-                  <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="studentModal.hide();reset()" mdbWavesEffect>Otkazi</button>
-                  <button type="button" (click)="saveStudenti();studentModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Save</button>
+                  <button type="button"  class="btn bg-red relative waves-light" aria-label="Close" (click)="studentModal.hide();reset()" mdbWavesEffect>Otkazi</button>
+                  <button type="button" class="btn btn-primary waves-light" (click)="saveStudenti();studentModal.hide()"  mdbWavesEffect>Save</button>
               </div>
           </div>
       </div>

@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login/login.component';
 import { RegisterComponent } from './register/register/register.component';
-import { UserComponent } from './user/user.component';
 import { AuthenticationGuard } from './guard/authentication.guard';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
@@ -35,6 +34,7 @@ import { PrijaveComponent } from './upravljanjeStudent/prijave/prijave.component
 import { RegistracijaZahtevAdministracijaComponent } from './administracija/registracija-zahtev-administracija/registracija-zahtev-administracija.component';
 import { PredmetiStudentiPredispitneObavezePolaganjeComponent } from './predmeti/predmeti-studenti-predispitne-obaveze-polaganje/predmeti-studenti-predispitne-obaveze-polaganje.component';
 import { PredispitneObavezeAdministracijaComponent } from './administracija/predmeti-administracija/predispitne-obaveze-administracija/predispitne-obaveze-administracija.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
@@ -43,7 +43,6 @@ import { PredispitneObavezeAdministracijaComponent } from './administracija/pred
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    UserComponent,
     ProfilComponent,
     PredmetiIspitiListComponent,
     PredmetiIspitiPrijaveComponent,
@@ -66,7 +65,7 @@ import { PredispitneObavezeAdministracijaComponent } from './administracija/pred
     PolozeniComponent,
     NepolozeniComponent,
     PrijaveComponent,
-    RegistracijaZahtevAdministracijaComponent,
+    RegistracijaZahtevAdministracijaComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +74,8 @@ import { PredispitneObavezeAdministracijaComponent } from './administracija/pred
     AppRoutingModule,
     SnotifyModule,
     MDBBootstrapModule.forRoot(),
-    AngularDualListBoxModule
+    AngularDualListBoxModule,
+    FontAwesomeModule
 
   ],
   providers: [AuthenticationGuard,

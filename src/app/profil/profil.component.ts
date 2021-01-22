@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SnotifyService } from 'ng-snotify';
 import { Subscription } from 'rxjs';
@@ -8,13 +8,14 @@ import { User } from '../model/user';
 import { AuthenticationService } from '../service/authentication.service';
 import { PrijavaService } from '../service/prijava.service';
 import { UserService } from '../service/user.service';
+import {ChangeDetectorRef} from '@angular/core';
 
 @Component({
   selector: 'app-profil',
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.css']
 })
-export class ProfilComponent implements OnInit {
+export class ProfilComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
   user: User;
@@ -38,13 +39,14 @@ export class ProfilComponent implements OnInit {
   public fileName: string;
   public profileImage: File;
   public fileStatus = {status:'', percentage: 0};
+  updatedUser: User;
 
 
   // @Input() users:any[] = [];
 
 
 
-  constructor(public userService: UserService, private prijavaService: PrijavaService,  public authService: AuthenticationService, private router:Router,
+  constructor(private cd : ChangeDetectorRef,public userService: UserService, private prijavaService: PrijavaService,  public authService: AuthenticationService, private router:Router,
     private snotify: SnotifyService) {}
 
 
@@ -63,26 +65,8 @@ export class ProfilComponent implements OnInit {
 
   }
 
-
-  // public getUsers(showNotification: boolean): void {
-  //   this.subscriptions.push(
-  //     this.userService.getUsers().subscribe(
-  //       (response: User[]) => {
-  //         this.userService.addUsersToLocalCache(response);
-  //         this.users = response;
-  //         if (showNotification) {
-  //           this.notify(`${response.length} user(s) loaded successfully.`, 'success', );
-  //         }
-  //       },
-  //       (errorResponse: HttpErrorResponse) => {
-  //         this.notify(errorResponse.error.message, 'error');
-  //       }
-  //     )
-  //   );
-
-  // }
-
   getDokument(){
+    this.subscriptions.push(
     this.userService.getDokumentiByStudentId(1).subscribe(
       d =>{
         d.forEach(element => {
@@ -90,11 +74,12 @@ export class ProfilComponent implements OnInit {
         });
         this.dokumenti = d
       }
-    );
+    ));
   }
 
 
   getPrijave(userId){
+    this.subscriptions.push(
     this.prijavaService.getPrijaveByStudentId(userId).subscribe( prijave => {
       prijave.forEach(element => {
         console.log(element.datumPrijave);
@@ -107,10 +92,11 @@ export class ProfilComponent implements OnInit {
 
       });
       this.prijavljeniPredmeti = prijave;
-    });
+    }));
   }
 
   getPolozeniPredmeti(userId){
+    this.subscriptions.push(
     this.userService.getPolozeniPredmeti(userId).subscribe( p => {
       p.forEach(element => {
         element.ocena = Math.ceil(element.osvojeniBodoviIspit/10);
@@ -118,7 +104,7 @@ export class ProfilComponent implements OnInit {
       this.polozeni = p;
       console.log("polozeni: ");
       console.log(...this.polozeni);
-    });
+    }));
   }
 
   getNepolozeniPredmeti(userId){
@@ -127,33 +113,52 @@ export class ProfilComponent implements OnInit {
 
 
   getUplate(userId){
+    this.subscriptions.push(
     this.userService.getUplateByStudentId(userId).subscribe( u => {
       this.uplate = u.body;
       this.uplate.forEach(element => {
         element.datumUplate = this.datePipe.transform(element.datumUplate, "yyyy-MM-dd");
       });
     }
-    );
+    ));
   }
 
   getDokumenti(userId){
+    this.subscriptions.push(
     this.userService.getDokumentiByStudentId(userId).subscribe( d => {
       d.forEach(element => {
         element.datumDokumenta = this.datePipe.transform(element.datumDokumenta, "yyyy-MM-dd");
       });
-      this.dokumenti = d; });
+      this.dokumenti = d; }));
   }
 
   changePassword(){
+    this.subscriptions.push(
     this.userService.updatePassword(this.currentPassword,this.newPassword, this.user.username).subscribe(res => {
-      this.authService.logOut;
-      this.router.navigateByUrl('/prijava');
-    });
+      this.authService.logOut();
+      this.router.navigateByUrl('/login');
+      this.notify("Lozinka Uspesno Promenjena", "success");
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.notify(errorResponse.error.message, "error");
+    }));
   }
 
-  izmenaBroja(user: User){}
+  izmenaBroja(user: User){
+    this.valid = true;
+    this.user.brojTelefona = user.brojTelefona;
+  }
 
-  posaljiIzmenuBroja(){}
+  posaljiIzmenuBroja(){
+
+    this.subscriptions.push(
+    this.userService.changePhoneNumber(this.user.id, this.user).subscribe(x => {
+      this.addUserToCache(this.user.id);
+    },(errorResponse: HttpErrorResponse) => {
+      this.notify(errorResponse.error.message, "error");
+    }
+    ));
+  }
 
   compareDates(prijavaDate){
     if (prijavaDate<this.currentDate){
@@ -163,6 +168,15 @@ export class ProfilComponent implements OnInit {
     }
   }
 
+  private addUserToCache(id: number){
+    this.userService.getUser(id).subscribe(
+      response =>{
+      this.authService.addUserToLocalCache(response);
+      this.user = this.authService.getUserFromLocalCache();
+      }
+    )
+  }
+
   public onUpdateProfileImage(): void {
     const formData = new FormData();
     formData.append('username', this.user.username);
@@ -170,7 +184,9 @@ export class ProfilComponent implements OnInit {
     this.subscriptions.push(
       this.userService.updateProfileImage(formData).subscribe(
         (event: HttpEvent<any>) => {
+          this.addUserToCache(this.user.id);
           this.reportUploadProgress(event);
+          this.cd.detectChanges();
         },
         (errorResponse: HttpErrorResponse) => {
           this.notify(errorResponse.error.message, "error");
@@ -179,9 +195,9 @@ export class ProfilComponent implements OnInit {
       )
     );
 
-    setTimeout(
-      function() {
-        location.reload();
+     setTimeout(
+       function() {
+      location.reload();
       }, 500
     )
   }
@@ -195,7 +211,7 @@ export class ProfilComponent implements OnInit {
       case HttpEventType.Response:
         if (event.status === 200) {
           this.user.profileImageUrl = `${event.body.profileImageUrl}?time=${new Date().getTime()}`;
-          this.notify(`image uploaded for ${event.body.firstName}` , "success");
+          this.notify(`image uploaded for ${event.body.ime}` , "success");
           this.fileStatus.status = 'done';
           break;
         } else {
@@ -215,9 +231,11 @@ export class ProfilComponent implements OnInit {
     document.getElementById(buttonId).click();
   }
 
-  public onProfileImageChange(fileName: string, profileImage: File): void {
-    this.fileName =  fileName;
-    this.profileImage = profileImage;
+  public onProfileImageChange(file: any): void {
+    this.fileName = file.target.files[0].name;
+    this.profileImage = file.target.files[0];
+    // this.fileName = fileName;
+    // this.profileImage = profileImage;
   }
 
   odjavi(prijavaId){
@@ -226,6 +244,7 @@ export class ProfilComponent implements OnInit {
 
   confirmOdjava(){
     let deleteIndex = null;
+    this.subscriptions.push(
     this.prijavaService.deletePrijava(this.odjavaId).subscribe(res =>{
       this.prijavljeniPredmeti.forEach((element, index) => {
         if (this.odjavaId == element.id){
@@ -236,7 +255,7 @@ export class ProfilComponent implements OnInit {
     },(errorResponse: HttpErrorResponse) => {
       this.notify(errorResponse.error.message, "error");
     }
-    )
+    ));
   }
 
 
@@ -277,6 +296,10 @@ export class ProfilComponent implements OnInit {
           pauseOnHover: true
         });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 }

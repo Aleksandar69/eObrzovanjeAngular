@@ -1,5 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { SnotifyService } from 'ng-snotify';
+import { Subscription } from 'rxjs';
 import { IspitService } from 'src/app/service/ispit.service';
 import { PredmetService } from 'src/app/service/predmet.service';
 
@@ -8,7 +11,7 @@ import { PredmetService } from 'src/app/service/predmet.service';
   templateUrl: './ispiti-administracija.component.html',
   styleUrls: ['./ispiti-administracija.component.css']
 })
-export class IspitiAdministracijaComponent implements OnInit {
+export class IspitiAdministracijaComponent implements OnInit, OnDestroy {
 
   @Input() predmetId:any;
   currentIspit = { id:"", predmet:" ", nastavnik:"",datum: "" ,rokZaPrijavu:"", usmeniUkupnoBodova:"", usmeniMinimumBodova:""};
@@ -23,9 +26,11 @@ export class IspitiAdministracijaComponent implements OnInit {
   activePage: number = 1;
   size: number = 5;
   pageCount = [];
+  private subscriptions: Subscription[] = [];
 
-  constructor(public ispitService: IspitService, public predmetService: PredmetService) {
+  constructor(public ispitService: IspitService, public predmetService: PredmetService, private snotify: SnotifyService) {
   }
+
 
   ngOnInit(): void {
     this.getIspiti();
@@ -38,7 +43,9 @@ export class IspitiAdministracijaComponent implements OnInit {
 
   getIspiti(){
     this.currentIspit.predmet = this.predmetId;
-    this.predmetService.getNastavnici(this.predmetId).subscribe(res => this.predmetNastavnici = res);
+    this.subscriptions.push(
+    this.predmetService.getNastavnici(this.predmetId).subscribe(res => this.predmetNastavnici = res));
+    this.subscriptions.push(
     this.ispitService.getIspitbyPredmetIdPages(this.predmetId, this.activePage-1, this.size).subscribe(res => {
       this.pageCount = Array(parseInt(res.headers.get("total"))).fill(0).map((x,i)=>i);
       if (this.pageCount.length == 0){
@@ -49,7 +56,12 @@ export class IspitiAdministracijaComponent implements OnInit {
         element.datum = this.datePipe.transform(element.datum,"yyyy-MM-dd");
         element.rokZaPrijavu = this.datePipe.transform(element.rokZaPrijavu,"yyyy-MM-dd");
       });
-    });
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.notify(errorResponse.error.message, "error");
+    }
+    )
+    );
   }
 
   deleteIspit(id){
@@ -58,6 +70,7 @@ export class IspitiAdministracijaComponent implements OnInit {
 
   deleteConfirm(){
     var deleteIndex: number;
+    this.subscriptions.push(
     this.ispitService.deleteIspit(this.deleteId).subscribe(res => {
     this.ispiti.forEach((element, index) => {
         if (this.deleteId == element.id){
@@ -65,6 +78,7 @@ export class IspitiAdministracijaComponent implements OnInit {
         }
       });
     this.ispiti.splice(deleteIndex,1);
+    this.notify("Uspesno Obrisan Ispit", "success");
     if (this.ispiti.length == 0){
       if (this.activePage!=1){
         this.activePage = this.activePage - 1;
@@ -75,7 +89,12 @@ export class IspitiAdministracijaComponent implements OnInit {
         this.getIspiti();
       }
       }
-    })
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.notify(errorResponse.error.message, "error");
+    }
+    )
+    );
   }
 
   saveConfirm(){
@@ -102,23 +121,35 @@ export class IspitiAdministracijaComponent implements OnInit {
   }
 
   create(){
+    this.subscriptions.push(
     this.ispitService.addIspit(this.predmetId, this.currentIspit).subscribe(res => {
       res.datum = this.datePipe.transform(res.datum,"yyyy-MM-dd");
       res.rokZaPrijavu = this.datePipe.transform(res.rokZaPrijavu,"yyyy-MM-dd");
+      this.notify("Uspesno Dodat Ispit", "success");
       this.ispiti.push(res);
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.notify(errorResponse.error.message, "error");
     })
+    );
   }
 
   update(){
+    this.subscriptions.push(
     this.ispitService.updateIspit(this.currentIspit.id, this.currentIspit).subscribe(x => {
       x.datum = this.datePipe.transform(x.datum,"yyyy-MM-dd");
       x.rokZaPrijavu = this.datePipe.transform(x.rokZaPrijavu,"yyyy-MM-dd");
+      this.notify("Uspesno Izmenjen Ispit", "success");
       for (let i =0; i<this.ispiti.length; i++){
         if (this.ispiti[i].id == x.id){
           this.ispiti[i] = x;
       }
     }
+  },
+  (errorResponse: HttpErrorResponse) => {
+    this.notify(errorResponse.error.message, "error");
   })
+    );
   }
 
   editIspit(ispit){
@@ -136,4 +167,46 @@ export class IspitiAdministracijaComponent implements OnInit {
   }
 
 
+  notify(message: string, type: string){
+    if(type==="error"){
+    this.snotify.error(message,
+      {
+        timeout: 2000,
+        showProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true
+      });
+    }
+    else if(type=="success"){
+      this.snotify.success(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+      }
+    else if(type=="info"){
+      this.snotify.info(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+      }
+    else if(type=="warning"){
+      this.snotify.warning(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 }

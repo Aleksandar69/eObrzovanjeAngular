@@ -18,14 +18,12 @@ import { NepolozeniComponent } from './upravljanjeStudent/nepolozeni/nepolozeni.
 import { PolozeniComponent } from './upravljanjeStudent/polozeni/polozeni.component';
 import { PrijaveComponent } from './upravljanjeStudent/prijave/prijave.component';
 import { UplateComponent } from './upravljanjeStudent/uplate/uplate.component';
-import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
   {path: '', redirectTo:"/profil", pathMatch:"full"},
   {path: 'login', component: LoginComponent },
   {path: 'register', component: RegisterComponent },
   {path: 'profil', component: ProfilComponent, canActivate: [AuthenticationGuard]},
-  {path: 'user', component: UserComponent, canActivate: [AuthenticationGuard] },
   {path: 'prijava-ispita', component: PrijavaComponent, canActivate: [AuthenticationGuard]},
   {path: 'dokumenti', component: DokumentiComponent, canActivate: [AuthenticationGuard]},
   {path: 'nepolozeni', component: NepolozeniComponent, canActivate: [AuthenticationGuard]},

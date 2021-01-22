@@ -46,8 +46,8 @@
                   <div *ngIf="osvojeniBodoviUsmeni.touched && osvojeniBodoviUsmeni.value<0" style="color: red"> Broj osvojenih bodova ne sme biti manje od 0</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="editModal.hide(); reset();" mdbWavesEffect>Otkazi</button>
-                    <button type="button" [disabled]="osvojeniBodoviUsmeni.value<0" (click)="save();editModal.hide();" class="btn bg-red relative waves-light" mdbWavesEffect>Sacuvaj</button>
+                    <button type="button"  class="btn bg-red relative waves-light" aria-label="Close" (click)="editModal.hide(); reset();" mdbWavesEffect>Otkazi</button>
+                    <button type="button" [disabled]="osvojeniBodoviUsmeni.value<0" (click)="save();editModal.hide();" class="btn btn-primary waves-light"  mdbWavesEffect>Sacuvaj</button>
                 </div>
             </div>
         </div>

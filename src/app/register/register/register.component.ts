@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { SnotifyService } from 'ng-snotify';
 import { Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { Student } from 'src/app/model/student';
 import { User } from 'src/app/model/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import {RegistracijaZahtev} from 'src/app/model/registracijaZahtev'
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +15,7 @@ import {RegistracijaZahtev} from 'src/app/model/registracijaZahtev'
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
+
 
   public showLoading: boolean;
   private subscriptions: Subscription[] = [];
@@ -37,22 +39,33 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.authenticationService.register(registracijaZahtev).subscribe(
         (response: RegistracijaZahtev) => {
           this.showLoading = false;
-          this.snotify.success(`Zahtjev za pravljenje novog naloga je poslan za korisnika: ${response.ime}.`,
+          this.snotify.success(`Zahtev za pravljenje novog naloga je poslan za korisnika: ${response.ime}.`,
             {
               timeout: 2000,
               showProgressBar: false,
               closeOnClick: false,
               pauseOnHover: true
             });
-        (errorResponse: HttpErrorResponse) => {
-          this.notify(errorResponse.error.message, "error");
-          this.showLoading = false;
-        }
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.notify(errorResponse.error.message, "error");
+        this.showLoading = false;
       }
       )
     );
   }
 
+
+  isLetter(letter){
+    let res = /^[a-zA-Z]+/;
+    return res.test(letter);
+
+  }
+
+  isNumber(number){
+    let res = /^\d+/;
+    return res.test(number);
+  }
 
   notify(message: string, type: string){
     if(type==="error"){
@@ -97,4 +110,5 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
+
 }

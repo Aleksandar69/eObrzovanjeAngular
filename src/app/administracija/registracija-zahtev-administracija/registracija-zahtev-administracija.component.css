@@ -1,0 +1,31 @@
+.card.card-body{
+  background: #102A43;
+ }
+ #izmeniDugme{
+  background-color: #B8EDA6;
+}
+
+#odobribtn{
+  background-color: #32a095;
+  border-color: #32a095;
+  color:white;
+}
+
+#odobribtn:hover{
+  background-color: #017065;
+
+}
+
+#obrisibtn{
+  color:white;
+}
+
+.pagination > li > a
+{
+  background-color: #5783ad;
+  color:white;
+}
+
+.page-item.disabled > a{
+  background-color: #a0cffa !important;
+}

@@ -27,7 +27,7 @@
                     <td>{{prijava.osvojeniBodoviIspit}}</td>
                     <td>{{prijava.ocena}}</td>
                     <td>{{prijava.ocenjeno? "DA" : "NE"}}</td>
-                    <td><button id="odjavaButton" class="btn btn-danger" [disabled]="prijava.ocenjeno || compareDates(prijava.datumPrijave)" (click)='odjavi(prijava.id); deleteModal.show();'>ODJAVA</button></td>
+                    <td><button id="odjavaButton" class="btn btn-danger" [disabled]="prijava.ocenjeno || compareDates(prijava.datumPrijave)" (click)='odjavi(prijava.id); deleteModal.show();'>Odjavi</button></td>
                 </tr>
             </tbody>
             <tbody *ngIf="prijavljeniPredmeti == undefined || prijavljeniPredmeti.length === 0">
@@ -50,8 +50,8 @@
               Da li ste sigurni da zelite da odjavite ispit?
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="deleteModal.hide()" mdbWavesEffect>Ne</button>
-              <button type="button" (click)="confirmOdjava();deleteModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+              <button type="button" class="btn bg-red relative waves-light" aria-label="Close" (click)="deleteModal.hide()" mdbWavesEffect>Ne</button>
+              <button type="button" (click)="confirmOdjava();deleteModal.hide()" class="btn btn-primary waves-light"  mdbWavesEffect>Da</button>
           </div>
       </div>
   </div>

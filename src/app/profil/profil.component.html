@@ -89,7 +89,7 @@
               <td><button id="odjavaButton" class="btn btn-danger"
                   [disabled]="prijava.ocenjeno || compareDates(prijava.datumPrijave) "
 
-                  (click)='odjavi(prijava.id); deleteModal.show();'>ODJAVA</button></td>
+                  (click)='odjavi(prijava.id); deleteModal.show();'>Odjavi</button></td>
             </tr>
           </tbody>
           <tbody *ngIf="
@@ -228,8 +228,8 @@
             <tr *ngFor="let dokument of dokumenti">
               <td>{{ dokument.naziv }}</td>
               <td>{{ dokument.datumDokumenta }}</td>
-              <td>
-                <a href="{{ dokument.sadrzaj }}"><button class="btn btn-primary">PREUZMI</button></a>
+              <td style="text-align: center;">
+                <a href="{{ dokument.sadrzaj }}"><button style="max-width: 200px; text-align: center;" class="btn btn-primary">Preuzmi</button></a>
               </td>
             </tr>
           </tbody>
@@ -285,7 +285,8 @@
         </div>
       </form>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary waves-light" aria-label="Close"
+        <button type="button"  aria-label="Close"
+        class="btn bg-red relative waves-light"
           (click)="addModal.hide(); form.reset()" mdbWavesEffect>
           Otkazi
         </button>
@@ -294,7 +295,7 @@
             novaLozinka.value == undefined ||
             novaLozinka.value.length < 4 ||
             novaLozinka.value != potvrdiLozinku.value
-          " (click)="changePassword(); addModal.hide(); form.reset()" class="btn bg-red relative waves-light"
+          " (click)="changePassword(); addModal.hide(); form.reset()" class="btn btn-primary waves-light"
           mdbWavesEffect>
           Sacuvaj
         </button>
@@ -325,7 +326,7 @@
         <!-- Switch -->
       </form>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addTelefon.hide()"
+        <button type="button" class="btn bg-red relative waves-light" aria-label="Close" (click)="addTelefon.hide()"
           mdbWavesEffect>
           Otkazi
         </button>
@@ -333,7 +334,7 @@
             brojTelefona.value == null ||
             brojTelefona.value == undefined ||
             brojTelefona.value.length < 11
-          " (click)="posaljiIzmenuBroja(); addTelefon.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>
+          " (click)="posaljiIzmenuBroja(); addTelefon.hide()" class="btn btn-primary waves-light"   mdbWavesEffect>
           Sacuvaj
         </button>
       </div>
@@ -356,9 +357,9 @@
         Da li ste sigurni da zelite da odjavite ispit?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="deleteModal.hide()"
+        <button type="button" class="btn bg-red relative waves-light" aria-label="Close" (click)="deleteModal.hide()"
           mdbWavesEffect>Ne</button>
-        <button type="button" (click)="confirmOdjava();deleteModal.hide()" class="btn bg-red relative waves-light"
+        <button type="button" (click)="confirmOdjava();deleteModal.hide()"  class="btn btn-primary waves-light"
           mdbWavesEffect>Da</button>
       </div>
     </div>
@@ -377,7 +378,7 @@
 
   <form enctype="multipart/form-data" style="display:none;">
     <input type="file"
-      (change)="onProfileImageChange($event.target.files[0].name, $event.target.files[0]); onUpdateProfileImage()"
+      (change)="onProfileImageChange($event); onUpdateProfileImage()"
      name="profile-image-input" id="profile-image-input" placeholder="file" accept="image/*" />
   </form>
 

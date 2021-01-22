@@ -1,11 +1,11 @@
-<div class="card card-body" style="background: white;">
+<div class="card card-body">
   <div class=" col-12 col-lg-12">
         <form>
                 <div class="form-group">
                     <div class="input-group">
-                        <h2 class="h2-responsive text-left">Dokumenti</h2>
-                        <input type="text" class="form-control" name="filterNaziv" placeholder="Unesi naziv..." [(ngModel)]="filterNaziv">
-                        <img src="../../../assets/searchIcon.png" (click)="getDokumenti()">
+                        <h2 class="h2-responsive text-left align-self-center mr-5">Dokumenti</h2>
+                        <input type="text" class="form-control align-self-center mr-3" name="filterNaziv" placeholder="Unesi naziv..." [(ngModel)]="filterNaziv">
+                        <a><fa-icon id="lupa" [icon]="faSearch" (click)="getDokumenti()"></fa-icon> </a>
                     </div>
                 </div>
             </form>
@@ -24,12 +24,13 @@
   <tr *ngFor="let dokument of dokumenti">
      <td>{{dokument.naziv}}</td>
      <td>{{dokument.datumDokumenta}}</td>
-     <td><a href="{{dokument.sadrzaj}}"><button class ="btn btn-primary">PREUZMI</button></a></td>
+
+     <td><a href="{{dokument?.sadrzaj}}"><button (click)="onGetDokument(dokument.sadrzaj);" class ="btn btn-primary">Pogledaj</button></a></td>
      <td><button (click)="editDokument(dokument); addModal.show();" class="btn alert-primary" >Izmeni</button></td>
      <td><button (click)="deleteDokument(dokument.id, dokument.naziv); basicModal.show();" class="btn bg-red" >Obrisi</button></td>
  </tr>
  <tr *ngIf="dokumenti.length==0"><td colspan="5" style="text-align: center">Trenutno nema dokumenata...</td></tr>
- <button (click)="addDokument(); addModal.show();" class="btn alert-primary" >Dodaj dokument</button>
+ <button (click)="addDokument(); addModal.show();" class="btn btn-primary" >Dodaj dokument</button>
  </tbody>
 </table>
 </div>
@@ -75,8 +76,8 @@
             Da li ste sigurni da zelite da obrisete {{deleteName}}?
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
-            <button type="button" (click)="deleteConfirm();basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+            <button type="button"  class="btn bg-red relative waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
+            <button type="button" class="btn btn-primary waves-light" (click)="deleteConfirm();basicModal.hide()"  mdbWavesEffect>Da</button>
         </div>
     </div>
 </div>
@@ -97,15 +98,16 @@
             <label>Naziv dokumenta:</label>
             <input class="form-control" #naziv="ngModel" type="text" placeholder="Naziv dokumenta" [(ngModel)]="currentDokument.naziv">
             <div *ngIf="naziv.touched && naziv.value.length<1" style="color: red">Naziv ne moze biti prazan.</div>
-           <div *ngIf="!isUpdate">
+           <!-- *ngIf="!isUpdate" -->
+            <div >
             <hr>
             <label>Izaberite dokument:</label>
-            <input #sadrzaj class="form-control" type="file" id="sadrzaj" ngModel (change)="getFiles($event)" accept="application/pdf">
+            <input #sadrzaj class="form-control" type="file" id="sadrzaj" ngModel (change)="addNewFile($event);" accept="application/image">
         </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide();reset()" mdbWavesEffect>Cancel</button>
-            <button type="button" [disabled]="(naziv.value == null || naziv.value == undefined || naziv.value.length<1) || isDocLocked" (click)="saveConfirm();addModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Save</button>
+            <button type="button" class="btn bg-red waves-light"   aria-label="Close" (click)="addModal.hide();reset();" mdbWavesEffect>Cancel</button>
+            <button type="button"  class="btn btn-primary waves-light" [disabled]="(naziv.value == null || naziv.value == undefined || naziv.value.length<1) || fileData == null || fileData == undefined" (click)="onAddFile();addModal.hide()" mdbWavesEffect>Save</button>
         </div>
     </div>
 </div>

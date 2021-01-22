@@ -1,1 +1,120 @@
-/* You can add global styles to this file, and also import other style files */
+th{background-color: #334E68;
+text-align: center;
+vertical-align: middle;
+color:White;
+}
+body{
+  background-color: #212121;
+  color:white;
+}
+td{
+  color:white;
+}
+h1,h2,h3{
+  color:white;
+}
+
+.card.card-body {
+  /* background-color: rgba(255, 255, 255, 0.5); */
+  background-color: #252a34;
+  color:white;
+  border: white;
+  /* border-color: #1DDECB; */
+}
+
+
+.modal-content{
+  background-color: #102a43;
+}
+
+
+#back{
+  font-size: 3em;
+  color: #1DDDCB
+ }
+
+ #back:hover{
+  color: #1aa396;
+ }
+
+ #lupa{
+   font-size: 3em;
+   color: #1DDDCB
+
+ }
+
+ #lupa:hover{
+   color: #1aa396;
+ }
+
+
+ tr button{
+  width: 100%;
+  font-size: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin: 0.2em 0;
+}
+
+/* input[type=text] {
+  width: 100%;
+  margin-top: 15px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  padding:10px;
+  border-radius:10px;
+  margin-right: 10px;
+} */
+
+.svg-inline--fa.fa-search.fa-w-16{
+  margin-left: 10px;
+}
+
+.btn.btn-primary{
+  background: #1DDECB;
+  color: black;
+}
+
+.btn.bg-red{
+  background-color: #cb3d3d;
+  /* background-color: #C62828; */
+  color:black;
+}
+
+.btn.bg-red:hover{
+  background-color: #A23030;
+}
+
+.btn.alert-primary{
+  background-color: #B8EDA6;
+  border-color: #B8EDA6;
+}
+.btn.alert-primary:hover{
+  background-color: #abe099;
+}
+
+.btn.btn-danger{
+  background-color: #d76868;
+  border-color: #d76868;
+  color:black
+}
+
+.btn.btn-danger:hover{
+  background-color: #B22424
+  ;
+}
+
+.btn.btn-primary:hover{
+  background-color: #1aada0;
+}
+
+.pagination > li > a
+{
+  background-color: #5783ad;
+  color:white;
+}
+
+.page-item.disabled > a{
+  background-color: #a0cffa !important;
+}

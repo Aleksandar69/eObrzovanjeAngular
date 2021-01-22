@@ -5,18 +5,13 @@ h1{
   text-align: center;
 }
 
-img{
-  max-width: 15em;
-  max-height: 15em;
-}
-
 #content{
   width:100%;
   text-align: center;
 }
 
 .card.card-body.m-lg-4 {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: #243B53;
 }
 
 .waves-light{
@@ -25,4 +20,8 @@ img{
 
 .waves-light:hover{
   color:white;
+}
+img{
+  max-width: 15em;
+  max-height: 15em;
 }

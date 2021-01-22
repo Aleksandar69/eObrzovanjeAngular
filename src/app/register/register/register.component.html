@@ -1,28 +1,31 @@
-<div class="container" style="margin-top: 100px;">
+<div class="container" style="margin-top: 20px;">
   <div class="d-flex justify-content-center h-50">
       <div class="user_card">
         <div class="d-flex justify-content-center">
           <div style="margin-top: 10px;margin-bottom:-90px;">
-            <h3>User Management Portal</h3>
+            <h3>Web Servis Register</h3>
           </div>
         </div>
         <div class="d-flex justify-content-center form_container">
           <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value)">
+
             <div class="input-group mb-3" >
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
               </div>
-              <input type="text" class="form-control" name="ime" placeholder="Ime" required ngModel #firstNameInput="ngModel">
+              <input type="text" class="form-control" name="ime" placeholder="Ime" required ngModel #firstNameInput="ngModel" pattern="^[a-zA-Z]+">
             </div>
-            <span class="help-block" *ngIf="firstNameInput.invalid && firstNameInput.touched" style="color:red;">Unesite ime</span>
+            <!-- <span class="help-block" *ngIf="firstNameInput.invalid && firstNameInput.touched" style="color:red;">Unesite ime</span> -->
+            <div class="help-block" *ngIf="(isNumber(firstNameInput.value) && firstNameInput.touched) ||( firstNameInput.touched && firstNameInput.invalid)" style="color:red;">Ime mora sadrzati samo slova i ne sme biti prazno</div>
 
             <div class="input-group mb-3">
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
               </div>
-              <input type="text" class="form-control" name="prezime" placeholder="Prezime" required ngModel #lastNameInput="ngModel">
+              <input type="text" class="form-control" name="prezime" placeholder="Prezime" required ngModel #lastNameInput="ngModel" pattern="^[a-zA-Z]+">
             </div>
-            <span class="help-block" *ngIf="lastNameInput.invalid && lastNameInput.touched" style="color:red;">Unesite prezime</span>
+            <!-- <span class="help-block" *ngIf="lastNameInput.invalid && lastNameInput.touched" style="color:red;">Unesite prezime</span> -->
+            <div class="help-block" *ngIf="(isNumber(lastNameInput.value) && lastNameInput.touched) ||( lastNameInput.touched && lastNameInput.invalid)" style="color:red;">Prezime mora sadrzati samo slova i ne sme biti prazno</div>
 
             <div class="input-group mb-3">
               <div class="input-group-append">
@@ -44,10 +47,11 @@
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
               </div>
-              <input type="text" class="form-control" name="jmbg" placeholder="JMBG" required ngModel #jmbgInput="ngModel">
+              <input type="text" class="form-control" pattern="^\d+" name="jmbg" placeholder="JMBG" required ngModel #jmbgInput="ngModel">
             </div>
-            <span class="help-block" *ngIf="jmbgInput.invalid && jmbgInput.touched" style="color:red;">Unesite jmbg</span>
-
+            <!-- <span class="help-block" *ngIf="jmbgInput.invalid && jmbgInput.touched" style="color:red;">Unesite jmbg</span> -->
+            <div class="help-block" *ngIf="(isLetter(jmbgInput.value) && jmbgInput.touched) ||( jmbgInput.touched && jmbgInput.invalid)" style="color:red;">JMBG mora sadrzati samo brojeve i ne sme biti prazan</div>
+            <div *ngIf="jmbgInput.touched && jmbgInput.value.length!=13" style="color: red">JMBG mora biti dug tacno 13 brojeva.</div>
             <div class="input-group mb-3" >
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -68,24 +72,26 @@
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
               </div>
-              <input type="text" class="form-control" name="tekuciRacun" placeholder="Tekuci Racun" required ngModel #tekuciRacun="ngModel">
+              <input type="text" pattern="^\d+" class="form-control" name="tekuciRacun" placeholder="Tekuci Racun" required ngModel #tekuciRacun="ngModel">
             </div>
-            <span class="help-block" *ngIf="tekuciRacun.invalid && tekuciRacun.touched" style="color:red;">Unesite tekuci racun</span>
-
+            <!-- <span class="help-block" *ngIf="tekuciRacun.invalid && tekuciRacun.touched" style="color:red;">Unesite tekuci racun</span> -->
+            <span class="help-block" *ngIf="(isLetter(tekuciRacun.value) && tekuciRacun.touched) ||( tekuciRacun.touched && tekuciRacun.invalid)" style="color:red;">Tekuci Racun mora sadrzati samo brojeve i ne sme biti prazan</span>
+            <div *ngIf="tekuciRacun.touched && tekuciRacun.value.length!=11" style="color: red">Tekuci Racun mora biti dug 11 brojeva.</div>
 
             <div class="input-group mb-3" >
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
               </div>
-              <input type="text" class="form-control" name="brojTelefona" placeholder="Broj Telefona" required ngModel #brojTelefona="ngModel">
+              <input type="text" class="form-control" name="brojTelefona" placeholder="Broj Telefona" pattern="^\d+" required ngModel #brojTelefona="ngModel">
             </div>
-            <span class="help-block" *ngIf="brojTelefona.invalid && brojTelefona.touched" style="color:red;">Unesite broj telefona</span>
+            <!-- <span class="help-block" *ngIf="brojTelefona.invalid && brojTelefona.touched" style="color:red;">Unesite broj telefona</span> -->
+            <div class="help-block" *ngIf="(isLetter(brojTelefona.value) && brojTelefona.touched) ||( brojTelefona.touched && brojTelefona.invalid)" style="color:red;">Telefon mora sadrzati samo brojeve i ne sme biti prazan</div>
 
 
 
 
         <div class="d-flex justify-content-center mt-3 login_container">
-          <button [disabled]="registerForm.invalid || showLoading" type="submit" name="button" class="btn login_btn">
+          <button [disabled]="registerForm.invalid || showLoading || tekuciRacun.value.length != 11 || jmbgInput.value.length!=13" type="submit" name="button" class="btn login_btn">
             <i *ngIf="showLoading" class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
             <span *ngIf="showLoading">Loading...</span>
             <span *ngIf="!showLoading">Register</span>
@@ -95,9 +101,11 @@
     </div>
         <div class="mt-4">
           <div class="d-flex justify-content-center links">
-            Already have an account? <a routerLink="/login"  class="ml-2" style="color: #2C3E50;">Log In</a>
+            Already have an account? <a routerLink="/login"  class="ml-2">Log In</a>
           </div>
         </div>
       </div>
     </div>
 </div>
+
+

@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { User } from 'src/app/model/user';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { IspitService } from 'src/app/service/ispit.service';
@@ -11,12 +12,13 @@ import { UserService } from 'src/app/service/user.service';
   templateUrl: './predmeti-ispiti-list.component.html',
   styleUrls: ['./predmeti-ispiti-list.component.css']
 })
-export class PredmetiIspitiListComponent implements OnInit {
+export class PredmetiIspitiListComponent implements OnInit, OnDestroy {
 
   @Input() predmet: any;
   ispiti: any[] = [];
   datePipe = new DatePipe("en-US");
   user: User;
+  private subscriptions: Subscription[] = [];
 
 
   constructor(private ispitService: IspitService, private authService: AuthenticationService, private userService: UserService) { }
@@ -26,6 +28,7 @@ export class PredmetiIspitiListComponent implements OnInit {
     this.user = this.authService.getUserFromLocalCache();
 
     if (this.user.role == "NASTAVNIK") {
+      this.subscriptions.push(
       this.ispitService.getIspitByPredmetIdandNastavnikId(this.predmet.id, this.user.id).subscribe(res => {
         res.reverse();
         res.forEach(element => {
@@ -33,9 +36,10 @@ export class PredmetiIspitiListComponent implements OnInit {
           element.rokZaPrijavu = this.datePipe.transform(element.rokZaPrijavu, "yyyy-MM-dd");
         });
         this.ispiti = res;
-      });
+      }));
     }
     else {
+      this.subscriptions.push(
       this.ispitService.getIspitByPredmetId(this.predmet.id).subscribe(res => {
         res.reverse();
         res.forEach(element => {
@@ -43,8 +47,12 @@ export class PredmetiIspitiListComponent implements OnInit {
           element.rokZaPrijavu = this.datePipe.transform(element.rokZaPrijavu, "yyyy-MM-dd");
         });
         this.ispiti = res;
-      });
+      }));
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 }

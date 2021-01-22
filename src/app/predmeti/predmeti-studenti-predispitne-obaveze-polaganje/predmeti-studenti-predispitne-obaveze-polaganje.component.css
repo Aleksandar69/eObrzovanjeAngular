@@ -1,0 +1,9 @@
+.pagination > li > a
+{
+  background-color: #5783ad;
+  color:white;
+}
+
+.page-item.disabled > a{
+  background-color: #a0cffa !important;
+}

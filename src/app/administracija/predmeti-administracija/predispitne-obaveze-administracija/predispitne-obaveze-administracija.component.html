@@ -1,4 +1,4 @@
-<div class="card card-body" style="background: white;">
+<div class="card card-body">
   <h3 class="h3-responsive text-left">Sabloni predispitnih obaveza</h3>
 <div class=" col-12 col-lg-12">
 <table class="table" style="table-layout: fixed">
@@ -40,8 +40,8 @@
           Da li ste sigurni da zelite da obrisete sablon "{{deleteName}}"?
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
-          <button type="button" (click)="deleteConfirm();basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+          <button type="button" class="btn bg-red relative waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
+          <button type="button" class="btn btn-primary waves-light" (click)="deleteConfirm();basicModal.hide()"  mdbWavesEffect>Da</button>
       </div>
   </div>
 </div>
@@ -73,8 +73,8 @@
       </form>
       </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide(); form.reset()" mdbWavesEffect>Otkazi</button>
-            <button type="button" [disabled]=" (naziv.value==null || naziv.value==undefined || naziv.value.length<1) || minimumBodova.value<1 || minimumBodova.value>ukupnoBodova.value || ukupnoBodova.value<1" (click)="saveConfirm();addModal.hide(); form.reset()" class="btn bg-red relative waves-light" mdbWavesEffect>Sacuvaj</button>
+            <button type="button" class="btn bg-red relative waves-light"  aria-label="Close" (click)="addModal.hide(); form.reset()" mdbWavesEffect>Otkazi</button>
+            <button type="button" class="btn btn-primary waves-light" [disabled]=" (naziv.value==null || naziv.value==undefined || naziv.value.length<1) || minimumBodova.value<1 || minimumBodova.value>ukupnoBodova.value || ukupnoBodova.value<1" (click)="saveConfirm();addModal.hide(); form.reset()"  mdbWavesEffect>Sacuvaj</button>
         </div>
     </div>
 </div>

@@ -86,7 +86,7 @@ export class UserService {
   }
 
   getUser( id: number){
-    return this.http.get(`${this.host}/users` + id).pipe(
+    return this.http.get(`${this.host}/users/` + id).pipe(
       map((res:any) => res)
     )
   }
@@ -160,5 +160,10 @@ export class UserService {
       observe: 'events'
     });
   }
+
+  changePhoneNumber(id, user){
+
+    return this.http.put(`${this.host}` + '/studenti/'+ id + '/broj-telefona', user).pipe(map((res:any) => res)
+    );}
 
 }

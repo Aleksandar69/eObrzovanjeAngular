@@ -1,4 +1,4 @@
-<div class="card card-body" style="background: white;">
+<div class="card card-body">
   <h3 class="h3-responsive text-left">Termini ispita</h3>
 <div class=" col-12 col-lg-12">
 <table class="table" style="table-layout: fixed">
@@ -77,8 +77,8 @@
           Da li ste sigurni da zelite da obrisete ispit?
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Ne</button>
-          <button type="button" (click)="deleteConfirm();basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Da</button>
+          <button type="button"  aria-label="Close" (click)="basicModal.hide()" class="btn bg-red relative waves-light" mdbWavesEffect>Ne</button>
+          <button type="button" (click)="deleteConfirm();basicModal.hide()"  class="btn btn-primary waves-light" mdbWavesEffect>Da</button>
       </div>
   </div>
 </div>
@@ -121,8 +121,8 @@
       </form>
       </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary waves-light" aria-label="Close" (click)="addModal.hide(); form.reset()" mdbWavesEffect>Otkazi</button>
-            <button type="button" [disabled]="(rokZaPrijavu.value > currentIspit.datum) || (rokZaPrijavu.invalid || rokZaPrijavu.value < firstDate) || (datum.invalid || datum.value < firstDate) || currentIspit.nastavnik=='' || currentIspit.nastavnik==null" (click)="saveConfirm();addModal.hide(); form.reset()" class="btn bg-red relative waves-light" mdbWavesEffect>Sacuvaj</button>
+            <button type="button"  class="btn bg-red relative waves-light" aria-label="Close" (click)="addModal.hide(); form.reset()" mdbWavesEffect>Otkazi</button>
+            <button type="button" class="btn btn-primary waves-light" [disabled]="(rokZaPrijavu.value > currentIspit.datum) || (rokZaPrijavu.invalid || rokZaPrijavu.value < firstDate) || (datum.invalid || datum.value < firstDate) || currentIspit.nastavnik=='' || currentIspit.nastavnik==null" (click)="saveConfirm();addModal.hide(); form.reset()"  mdbWavesEffect>Sacuvaj</button>
         </div>
     </div>
 </div>

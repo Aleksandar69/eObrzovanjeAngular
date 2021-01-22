@@ -7,11 +7,11 @@ html {
     background: #60a3bc !important;
 }
 .user_card {
-    height: 500px;
+    height: 800px;
     width: 600px;
     margin-top: auto;
     margin-bottom: auto;
-    background: #afbfd8;
+    background: #243b53;
     position: relative;
     display: flex;
     justify-content: center;
@@ -21,6 +21,7 @@ html {
     -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0a, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;
+    color:white
 
 }
 .brand_logo_container {
@@ -40,12 +41,14 @@ html {
     border: 2px solid white;
 }
 .form_container {
-    margin-top: 100px;
+    margin-top: 70px;
 }
 .login_btn {
     width: 100%;
-    background: #1B4F72!important;
-    color: white !important;
+    background: #1DDECB!important;
+    /* background: #303f9f!important; */
+    /* color: white !important; */
+    color: black;
 }
 .login_btn:focus {
     box-shadow: none !important;
@@ -71,4 +74,8 @@ html {
 
 .input-group .child{
   margin: 0 auto;
+}
+
+input.form-control{
+  width: 400px;
 }

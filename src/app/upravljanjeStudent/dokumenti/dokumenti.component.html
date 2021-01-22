@@ -14,7 +14,7 @@
       <tr *ngFor="let dokument of dokumenti">
         <td>{{dokument.naziv}}</td>
         <td>{{dokument.datumDokumenta}}</td>
-        <td><a href="{{dokument.sadrzaj}}"><button class="btn btn-primary">PREUZMI</button></a></td>
+        <td style="text-align: center;"><a href="{{dokument.sadrzaj}}"><button style="max-width: 200px;"class="btn btn-primary">Preuzmi</button></a></td>
       </tr>
     </tbody>
     <tbody *ngIf="dokumenti == undefined || dokumenti.length === 0">

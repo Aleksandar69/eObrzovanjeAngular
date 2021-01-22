@@ -5,5 +5,5 @@
   <td><button  class="btn btn-primary" (click)="showStudenti=!showStudenti;" >Studenti</button></td>
   <td><button  class="btn btn-primary" (click)="showIspiti=!showIspiti;" >Ispiti</button></td>
 </tr>
-<tr *ngIf="showStudenti"><td colspan="5" style="padding:0"><app-predmeti-studenti-list [predmet]="predmet" class="card card-body" style="background: rgb(241, 241, 241);"></app-predmeti-studenti-list></td></tr>
-<tr *ngIf="showIspiti"><td colspan="5" style="padding:0"><app-predmeti-ispiti-list [predmet]="predmet" class="card card-body" style="background: rgb(241, 241, 241);"></app-predmeti-ispiti-list></td></tr>
+<tr *ngIf="showStudenti"><td colspan="5" style="padding:0"><app-predmeti-studenti-list [predmet]="predmet" class="card card-body"></app-predmeti-studenti-list></td></tr>
+<tr *ngIf="showIspiti"><td colspan="5" style="padding:0"><app-predmeti-ispiti-list [predmet]="predmet" class="card card-body"></app-predmeti-ispiti-list></td></tr>

@@ -17,7 +17,7 @@
            <td>{{ispit.usmeniUkupnoBodova}}</td>
            <td><button (click)="ispit.showPrijave = !ispit.showPrijave" class="btn btn-primary" >Prijave</button></td>
        </tr>
-       <tr *ngIf="ispit.showPrijave"><td colspan="4" style="padding:0"><app-predmeti-ispiti-prijave [ispit]="ispit" class="card card-body" style="background: rgb(230, 230, 230);"></app-predmeti-ispiti-prijave></td></tr>
+       <tr *ngIf="ispit.showPrijave"><td colspan="4" style="padding:0"><app-predmeti-ispiti-prijave [ispit]="ispit" class="card card-body" ></app-predmeti-ispiti-prijave></td></tr>
     </tbody>
     <tbody *ngIf="ispiti.length==0">
         <tr><td colspan="4" style="text-align: center">Trenutno nema ispita za predmet...</td></tr>

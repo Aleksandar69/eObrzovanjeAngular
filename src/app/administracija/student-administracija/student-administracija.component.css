@@ -1,58 +1,35 @@
-table{
-  background-color: rgba(255, 255, 255, 0.6);
-}
-
-tr button{
-  width: 100%;
-  font-size: 0.8em;
-  padding-left: 1em;
-  padding-right: 1em;
-  margin: 0.2em 0;
-}
-
-input{
-  margin-top: 0.25em;
-}
-
-footer{
-  text-align: center;
-  margin-bottom: 1em;
-}
-
-#footerDiv{
-  width:100%;
-  text-align: "center";
-}
-
-select{
-  padding:0.5em 1em;
-}
-
-.input-group input{
-  margin: 1em 0.5em;
-  border-radius: 0.75em;
-}
-
-.input-group img{
-  max-width: 2em;
-  max-height: 2em;
-  cursor: pointer;
-}
-
-.input-group img, .input-group a{
+.input-group a{
   align-self: center;
 }
-
-#backLink{
-  width: 20%;
+select{
+  padding:0.5em 1em;
+  margin-bottom: 30px;
 }
 
-.pagination .disabled a.num{
-  color: white;
+.pagination > li > a
+{
+  background-color: #5783ad;
+  color:white;
 }
 
-main{
-  margin-top: 2em;
-  background-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 30px 30px rgba(255, 255, 255, 0.6);
+.page-item.disabled > a{
+  background-color: #a0cffa !important;
+}
+
+#izmeniDugme:hover{
+  background-color: #77976c;
+}
+#izmeniDugme{
+  background-color: #B8EDA6;
+  border-color:#B8EDA6;
+}
+
+#dodajbtn{
+  background-color: rgb(48,63,159);
+  border-color:  rgb(48,63,159);
+  color:white
+}
+
+#dodajbtn:hover{
+  background-color: #182052;
 }

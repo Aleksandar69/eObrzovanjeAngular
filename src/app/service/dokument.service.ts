@@ -21,21 +21,31 @@ export class DokumentService {
   }
 
   deleteDokument(id){
-    return this.http.delete(`${this.host}` + '/dokument/' + id).pipe(map((res:any) => res)
+    return this.http.delete(`${this.host}` + '/dokumenti/' + id).pipe(map((res:any) => res)
     );
   }
 
-  addDokument(studentId, dokument){
-    const formData = new FormData();
-    formData.set("naziv", dokument.naziv);
-    formData.set("dokument", dokument.sadrzaj);
+  // addDokument(studentId, dokument){
+  //   const formData = new FormData();
+  //   formData.set("naziv", dokument.naziv);
+  //   formData.set("dokument", dokument.sadrzaj);
+  //   return this.http.post(`${this.host}` + '/studenti/' + studentId + '/dokumenti', formData).pipe(map((res:any) => res)
+  //  );
+  // }
+
+  addDokument(formData: FormData, studentId){
     return this.http.post(`${this.host}` + '/studenti/' + studentId + '/dokumenti', formData).pipe(map((res:any) => res)
    );
   }
 
   updateDokument(id, dokument){
-    return this.http.put(`${this.host}` + '/dokument/'+id, dokument).pipe(map((res:any) => res)
+    return this.http.put(`${this.host}` + '/dokumenti/'+id, dokument).pipe(map((res:any) => res)
   );
+  }
+
+  editDokument(formData: FormData, studentId){
+    return this.http.put(`${this.host}` + '/studenti/' + studentId + '/dokumenti', formData).pipe(map((res:any) => res)
+   );
   }
 
 }

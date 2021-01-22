@@ -1,17 +1,23 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { SnotifyService } from 'ng-snotify';
+import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/service/user.service';
+import { faArrowCircleLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-student-administracija',
   templateUrl: './student-administracija.component.html',
   styleUrls: ['./student-administracija.component.css']
 })
-export class StudentAdministracijaComponent implements OnInit {
+export class StudentAdministracijaComponent implements OnInit, OnDestroy {
 
+  faArrowCircleLeft = faArrowCircleLeft;
+  faSearch = faSearch;
   @Input() users:any[] = [];
   deleteId:number;
   deleteName:string;
-  currentUser = {id:"", username:"", password:"", ime:"", prezime:"", adresa:"", role:"STUDENT", brojIndexa: "", tekuciRacun: "", jmbg:""};
+  currentUser = {id:"", username:"", password:"", ime:"", prezime:"", adresa:"", role:"STUDENT", brojIndexa: "", tekuciRacun: "", jmbg:"", brojTelefona: null};
   passwordRepeat:string;
   userNameOriginal:string;
   valid:boolean;
@@ -21,8 +27,11 @@ export class StudentAdministracijaComponent implements OnInit {
   filterIme: string;
   filterPrezime: string;
   pageCount = [];
+  private subscriptions: Subscription[] = [];
 
-  constructor(public userService : UserService) {
+
+  constructor(public userService : UserService,
+    private snotify: SnotifyService) {
   }
 
 
@@ -31,6 +40,7 @@ export class StudentAdministracijaComponent implements OnInit {
   }
 
   getStudents(){
+    this.subscriptions.push(
     this.userService.getStudenti(this.activePage-1, this.size, this.filterIme, this.filterPrezime).subscribe(res => {
       this.pageCount = Array(parseInt(res.headers.get("total"))).fill(0).map((x,i)=>i);
       if (this.pageCount.length == 0){
@@ -38,7 +48,7 @@ export class StudentAdministracijaComponent implements OnInit {
       }
       this.users = res.body;
     }
-      );
+    ));
   }
 
   deleteStudent(id, name){
@@ -48,6 +58,7 @@ export class StudentAdministracijaComponent implements OnInit {
 
   deleteConfirm(){
     var deleteIndex: number;
+    this.subscriptions.push(
     this.userService.deleteStudent(this.deleteId).subscribe(res => {
       this.users.forEach((element, index) => {
         if (this.deleteId == element.id){
@@ -65,7 +76,11 @@ export class StudentAdministracijaComponent implements OnInit {
         this.getStudents();
       }
     }
-    });
+    this.notify("Student Uspesno Obrisan", "success");
+    },
+    (errorResponse: HttpErrorResponse) => {
+      this.notify(errorResponse.error.message, "error");
+    }));
   }
 
 
@@ -77,19 +92,37 @@ export class StudentAdministracijaComponent implements OnInit {
     }
   }
 
+
+  isLetter(letter){
+    let res = /^[a-zA-Z]+/;
+    return res.test(letter);
+
+  }
+
+  isNumber(number){
+    let res = /^\d+/;
+    return res.test(number);
+  }
+
   save(){
+    this.subscriptions.push(
     this.userService.addUser2(this.currentUser).subscribe(x => {
         if (this.users.length == this.size){
             this.pageCount.push(this.pageCount.length+1);
-            this.changePage(this.pageCount.length);
+            this.changePage(1);
         }
         this.users.push(x);
+        this.notify("Student Uspesno Dodat", "success");
         this.reset();
+      },
+      (errorResponse: HttpErrorResponse) => {
+        this.notify(errorResponse.error.message, "error");
       }
-      );
+      ));
   }
 
   reset(){
+    this.currentUser.id = null;
     this.currentUser.ime="";
     this.currentUser.adresa="";
     this.currentUser.prezime="";
@@ -100,10 +133,12 @@ export class StudentAdministracijaComponent implements OnInit {
     this.currentUser.brojIndexa = "";
     this.currentUser.tekuciRacun = "";
     this.currentUser.jmbg = "";
+    this.currentUser.brojTelefona = "";
   }
 
   checkForUsername(){
   this.valid = true;
+  this.subscriptions.push(
   this.userService.checkForUsername(this.currentUser.username).subscribe((res)=>{
     if (this.currentUser.username != this.userNameOriginal || this.userNameOriginal=="")
       this.valid=false;
@@ -112,16 +147,17 @@ export class StudentAdministracijaComponent implements OnInit {
         if (this.currentUser.username != this.userNameOriginal || this.userNameOriginal=="")
           this.valid=false;
       }
-    })
+    }));
   }
 
   addStudent(){
     this.reset();
     this.isUpdate = false;
-
+    console.log("update: " + this.isUpdate);
   }
 
   update(){
+    this.subscriptions.push(
     this.userService.updateUser(this.currentUser.id, this.currentUser).subscribe(x => {
     var index;
     for (let i =0; i<this.users.length; i++){
@@ -130,8 +166,12 @@ export class StudentAdministracijaComponent implements OnInit {
         index = i;
         }
       }
+      this.notify("Student Uspesno Izmenjen", "success");
 
-});
+},
+(errorResponse: HttpErrorResponse) => {
+  this.notify(errorResponse.error.message, "error");
+}));
 
   }
 
@@ -147,6 +187,9 @@ export class StudentAdministracijaComponent implements OnInit {
     this.currentUser.tekuciRacun = user.tekuciRacun;
     this.currentUser.jmbg = user.jmbg;
     this.currentUser.brojIndexa = user.brojIndexa;
+    this.currentUser.brojTelefona = user.brojTelefona;
+
+    console.log("update: " + this.isUpdate);
   }
 
 
@@ -168,4 +211,45 @@ export class StudentAdministracijaComponent implements OnInit {
       this.getStudents();
   }
 
+  notify(message: string, type: string){
+    if(type==="error"){
+    this.snotify.error(message,
+      {
+        timeout: 2000,
+        showProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true
+      });
+    }
+    else if(type=="success"){
+      this.snotify.success(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+      }
+    else if(type=="info"){
+      this.snotify.info(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+      }
+    else if(type=="warning"){
+      this.snotify.warning(message,
+        {
+          timeout: 2000,
+          showProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true
+        });
+    }
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 }

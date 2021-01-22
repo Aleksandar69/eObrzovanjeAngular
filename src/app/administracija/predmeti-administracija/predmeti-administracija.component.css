@@ -1,0 +1,36 @@
+h1,h2,h3{
+  text-align: center;
+  margin: 0, auto;
+}
+
+.btn.btn-primary.izmeniDugme{
+  background-color: #B8EDA6;
+}
+
+#izmeniDugme{
+  background-color: #B8EDA6;
+  border-color: #B8EDA6;
+}
+
+#dodajbtn{
+  background-color: rgb(48,63,159);
+  border-color:  rgb(48,63,159);
+  color:white
+}
+
+#izmeniDugme:hover{
+  background-color: #77976c;
+}
+
+.page-item{
+  color: black;
+}
+
+
+.pagination > li > a
+{
+    color:grey;
+}
+#dodajbtn:hover{
+  background-color: #182052;
+}
